@@ -4,7 +4,11 @@
 #include "Game.h"
 #include "Control.h"
 #include "Pawn.h"
+#include "Controlleur.h"
 using namespace std;
+
+#define WWIDTH 800
+#define WHEIGHT 600
 
 
 int main(int argc, char * argv[])
@@ -12,13 +16,13 @@ int main(int argc, char * argv[])
     Engine e(argc,argv);
     
 	Grid * gr = new Grid();
-	int * ww = new int(800);               
-	int * wh = new int(600);
 	vector<Pawn *> pawns;
+
+	Controlleur* ctrl = new Controlleur(gr, WWIDTH, WHEIGHT, pawns);
     
-	Graphic * ge = new Graphic(gr, ww, wh, &pawns);
-	Control * ce = new Control(gr, ww, wh, &pawns);
-	Game    * gme = new Game(gr, ww, wh);
+	Graphic * ge = new Graphic(ctrl);
+	Control * ce = new Control(ctrl);
+	Game    * gme = new Game(ctrl);
     
     e.setGraphicEngine(ge);
     e.setGameEngine(gme);
@@ -27,8 +31,7 @@ int main(int argc, char * argv[])
     e.start();
 
 	delete gr;
-	delete ww;
-	delete wh;
+	delete ctrl;
 
     return 0;
 }

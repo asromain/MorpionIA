@@ -2,8 +2,7 @@
 #include <iostream>
 #include "Engine.h"
 #include "GraphicPrimitives.h"
-#include "Grid.h"
-#include "Pawn.h"
+#include "Controlleur.h"
 using namespace std;
 
 
@@ -17,13 +16,11 @@ class Graphic : public GraphicEngine
 
 private:
 
-	Grid * gr;
-	int *ww, *wh;            // windowsWidth, windowsHeight
-	vector<Pawn *> *pawns;   // notre liste de pions
+	Controlleur *ctrl;
 
 public:
 
-	Graphic(Grid * gr_, int * ww_, int * wh_, vector<Pawn *> *pawns_);
+	Graphic(Controlleur *ctrl_) : ctrl(ctrl_) {}
 	virtual void Draw();
 	virtual void reshape(int ww_, int wh_);
 

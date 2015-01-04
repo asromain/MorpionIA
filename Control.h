@@ -1,8 +1,7 @@
 #pragma once
 #include <iostream>
 #include "Engine.h"
-#include "Grid.h"
-#include "Pawn.h"
+#include "Controlleur.h"
 using namespace std;
 
 /***************************************
@@ -15,13 +14,11 @@ class Control : public ControlEngine
 
 private:
 
-	Grid * gr;
-	int *ww, *wh;            // windowsWidth et windowsHeight
-	vector<Pawn *> *pawns;   // notre liste de pions
+	Controlleur *ctrl;
 
 public:
 
-	Control(Grid * gr_, int * ww_, int * wh_, vector<Pawn *> *pawns_);
+	Control(Controlleur *ctrl_) : ctrl(ctrl_) {}
 	virtual void MouseCallback(int button, int state, int x, int y);
 
 };
