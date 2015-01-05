@@ -36,7 +36,7 @@ bool Controlleur::getJ1ordi()
 {
 	return j1ordi;
 }
-bool Controlleur::getTurn()
+bool Controlleur::getTurnJ2()
 {
 	return turn;
 }
@@ -89,10 +89,11 @@ void Controlleur::isGameOver()
 				t = gr->getCase(i, j)->getType();
 				lg = 1;
 			}
-			if (lg == LONG_TO_WIN)
+			if (lg == LONG_TO_WIN && t != 0)
 			{
-				changeTurn();
 				setStatus(2);
+				gagnant = turn + 1;
+				changeTurn();
 			}
 		}
 	}
@@ -109,14 +110,24 @@ void Controlleur::isGameOver()
 				t = gr->getCase(i, j)->getType();
 				lg = 1;
 			}
-			if (lg == LONG_TO_WIN)
+			if (lg == LONG_TO_WIN && t != 0)
 			{
-				changeTurn();
 				setStatus(2);
+				gagnant = turn + 1;
+				changeTurn();
 			}
 		}
 	}
 	//diagonale (à généraliser)
+}
+void Controlleur::print() 
+{
+	cout << "status : " << status << 
+		", gagnant : " << gagnant <<
+		", j1ordi : " << j1ordi << 
+		", turn : " << turn << 
+		", curseur : " << curseur << endl;
+	gr->print();
 }
 
 void Controlleur::reset()
@@ -132,7 +143,8 @@ int Controlleur::relativeToPixelX(float n)
 }
 float Controlleur::pixelToRelativeX(int n)
 {
-	return (n - (ww / 2)) / (ww / 2);
+	float w = ww;
+	return (n - (w / 2)) / (w / 2);
 }
 int Controlleur::relativeToPixelY(float n)
 {
@@ -140,7 +152,8 @@ int Controlleur::relativeToPixelY(float n)
 }
 float Controlleur::pixelToRelativeY(int n)
 {
-	return (n - (wh / 2)) / -(wh / 2);
+	float h = wh;
+	return (n - (h / 2)) / -(h / 2);
 }
 
 // Destructeur

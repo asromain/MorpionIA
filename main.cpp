@@ -1,4 +1,5 @@
 #include <iostream>
+#include <ctime>
 #include "Engine.h"
 #include "Graphic.h"
 #include "Game.h"
@@ -20,6 +21,8 @@ int main(int argc, char * argv[])
     e.setGameEngine(gme);
     e.setControlEngine(ce);
 	
+	srand(time(NULL));
+
     e.start();
 
 	delete ctrl;

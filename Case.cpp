@@ -80,7 +80,7 @@ float Case::getWidth(){
 float Case::getHeight(){
 	return height;
 }
-char Case::getType() {
+int Case::getType() {
 	return type;
 }
 void Case::setType(int type_) {

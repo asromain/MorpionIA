@@ -15,7 +15,7 @@ void IA::play(vector<vector<int>*> matrix, int dim, int* res, int j)
 	{
 		x = rand() % dim;
 		y = rand() % dim;
-		tmp = matrix[x]->at(y) == 0;
+		tmp = matrix[y]->at(x) == 0;
 	}
 	res[0] = x;
 	res[1] = y;

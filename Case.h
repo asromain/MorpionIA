@@ -27,7 +27,7 @@ public:
 	float getPosY();
 	float getWidth();
 	float getHeight();
-	char getType();
+	int getType();
 	void setType(int type_);
 
 };

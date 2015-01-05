@@ -14,10 +14,12 @@ void Game::idle()
 	switch (ctrl->getStatus())
 	{
 	case 1:
-		if (ctrl->getJ1ordi() == !ctrl->getTurn())
+		if (ctrl->getJ1ordi() != ctrl->getTurnJ2())
 		{
-			ctrl->iaTurn(ctrl->getTurn() + 1);
+			ctrl->print();
+			ctrl->iaTurn(ctrl->getTurnJ2() + 1);
 			ctrl->isGameOver();
+			ctrl->changeTurn();
 		}
 		break;
 	default:

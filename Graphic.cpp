@@ -58,18 +58,18 @@ void Graphic::menu(int c)
 {
 	/*
 	Debug
-	GraphicPrimitives::drawFillRect2D(-0.17, -0.02, 0.25, 0.09, 1.0, 1.0, 0.0);
-	GraphicPrimitives::drawFillRect2D(-0.17, -0.52, 0.25, 0.09, 1.0, 1.0, 0.0);*/
+	GraphicPrimitives::drawFillRect2D(-0.15, -0.02, 0.25, 0.09, 1.0, 1.0, 0.0);
+	GraphicPrimitives::drawFillRect2D(-0.15, -0.52, 0.25, 0.09, 1.0, 1.0, 0.0);*/
 	GraphicPrimitives::drawText2D("SELECT THE AI", -0.2, 0.5, 1.0, 1.0, 1.0);
 	switch (c)
 	{
 	case 0:
-		GraphicPrimitives::drawText2D("PLAYER 1", -0.15, 0.0, 1.0, 0.0, 0.0);
-		GraphicPrimitives::drawText2D("PLAYER 2", -0.15, -0.5, 1.0, 1.0, 1.0);
+		GraphicPrimitives::drawText2D("PLAYER 1", -0.13, 0.0, 1.0, 0.0, 0.0);
+		GraphicPrimitives::drawText2D("PLAYER 2", -0.13, -0.5, 1.0, 1.0, 1.0);
 		break;
 	case 1:
-		GraphicPrimitives::drawText2D("PLAYER 1", -0.15, 0.0, 1.0, 1.0, 1.0);
-		GraphicPrimitives::drawText2D("PLAYER 2", -0.15, -0.5, 1.0, 0.0, 0.0);
+		GraphicPrimitives::drawText2D("PLAYER 1", -0.13, 0.0, 1.0, 1.0, 1.0);
+		GraphicPrimitives::drawText2D("PLAYER 2", -0.13, -0.5, 1.0, 0.0, 0.0);
 		break;
 	default:
 		break;

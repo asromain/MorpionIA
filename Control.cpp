@@ -24,10 +24,8 @@ void Control::specialCallback(int key, int x, int y)
 			ctrl->setStatus(1);
 		}
 		break;
-	case 2:
-		ctrl->setStatus(0);
-		break;
 	default:
+		ctrl->setStatus(0);
 		break;
 	}
 }
@@ -44,10 +42,8 @@ void Control::KeyboardCallback(unsigned char key, int x, int y)
 			ctrl->setStatus(1);
 		}
 		break;
-	case 2:
-		ctrl->setStatus(0);
-		break;
 	default:
+		ctrl->setStatus(0);
 		break;
 	}
 }
@@ -59,19 +55,19 @@ void Control::MouseCallback(int button, int state, int x, int y)
 {
 	float fx = ctrl->pixelToRelativeX(x);
 	float fy = ctrl->pixelToRelativeY(y);
+	std::cout << "x = " << x << ", y = " << y << ", fx = " << fx << ", fy = " << fy << endl;
 	switch (ctrl->getStatus())
 	{
 	case 0:
-
 		if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
 		{
-			if (-0.12 < fx && fx < 0.09 && 0.48 < fy && fy < 0.58)
+			if (-0.17 < fx && fx < 0.1 && -0.02 < fy && fy < 0.07)
 			{
 				if (!ctrl->getJ1ordi()) ctrl->changeJ1ordi();
 				ctrl->reset();
 				ctrl->setStatus(1);
 			}
-			if (-0.22 < fx && fx < 0.19 && -0.02 < fy && fy < 0.08)
+			if (-0.17 < fx && fx < 0.1 && -0.52 < fy && fy < -0.43)
 			{
 				if (ctrl->getJ1ordi()) ctrl->changeJ1ordi();
 				ctrl->reset();
@@ -80,20 +76,21 @@ void Control::MouseCallback(int button, int state, int x, int y)
 		}
 		break;
 	case 1:
-		if (ctrl->getJ1ordi() == ctrl->getTurn())
+		if (ctrl->getJ1ordi() == ctrl->getTurnJ2())
 		{
 			if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
 			{
-				Case * c = ctrl->getGr()->getCase(x, y, ctrl->getWw(), ctrl->getWh());
+				Case * c = ctrl->getGr()->getCase(fx, fy);
 				if (c->getType() == 0)
 				{
+					ctrl->print();
 					float posX = c->getPosX();
 					float posY = c->getPosY();
 					float width = c->getWidth();
 					float height = c->getHeight();
-					ctrl->getGr()->action(x, y, ctrl->getWw(), ctrl->getWh(), ctrl->getTurn() + 1);
-					ctrl->changeTurn();
+					ctrl->getGr()->action(fx, fy, ctrl->getTurnJ2() + 1);
 					ctrl->isGameOver();
+					ctrl->changeTurn();
 				}
 			}
 		}
@@ -111,6 +108,7 @@ void Control::MouseCallback(int button, int state, int x, int y)
 		ctrl->setStatus(0);
 		break;
 	default:
+		ctrl->setStatus(0);
 		break;
 	}
 }

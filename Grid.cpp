@@ -36,12 +36,10 @@ void Grid::draw()
 }
 
 //Récupération de la case cliquée
-Case * Grid::getCase(float coordX_, float coordY_, int ww_, int wh_)
+Case * Grid::getCase(float fx, float fy)
 {
-	int ww = ww_ / 2;
-	int wh = wh_ / 2;
-	int idLine = (int)((((coordY_ - wh) / wh) + 1) / caseHeight);     // récupération de l'indice de la ligne
-	int idCol = (int)((((coordX_ - ww) / ww) + 1) / caseWidth);       // récupération de l'indice de la colonne
+	int idLine = (int)((fy + 1) / caseHeight);     // récupération de l'indice de la ligne
+	int idCol = (int)((fx + 1)/ caseWidth);       // récupération de l'indice de la colonne
 
 	return board[idLine][idCol];
 }
@@ -66,12 +64,11 @@ vector<vector<int>*> Grid::getMatrix()
 {
 	return matrix;
 }
-void Grid::action(int x, int y, int ww, int wh, int joueur)
+void Grid::action(float fx, float fy, int joueur)
 {
-	int w = ww / 2;
-	int h = wh / 2;
-	int idLine = (int)((((y - h) / h) + 1) / caseHeight);     // récupération de l'indice de la ligne
-	int idCol = (int)((((x - w) / w) + 1) / caseWidth);       // récupération de l'indice de la colonne
+	int idLine = (int)((fy + 1)/ caseHeight);     // récupération de l'indice de la ligne
+	int idCol = (int)((fx + 1)/ caseWidth);       // récupération de l'indice de la colonne
+	cout << "idLine : " << idLine << "idCol : " << idCol << endl;
 	matrix[idLine]->at(idCol) = joueur;
 	board[idLine][idCol]->setType(joueur);
 }
@@ -79,4 +76,24 @@ void Grid::action(int x, int y, int joueur)
 {
 	matrix[x]->at(y) = joueur;
 	board[x][y]->setType(joueur);
+}
+
+void Grid::print()
+{
+	for (int i = 0; i < DIM; i++) 
+	{
+		for (int j = 0; j < DIM * 2; j++) 
+		{
+			if (j == DIM) cout << "    ";
+			if (j < DIM)
+			{
+				cout << matrix[i]->at(j) << " ";
+			}
+			else
+			{
+				cout << board[i][j-DIM]->getType() << " ";
+			}
+		}
+		cout << endl;
+	}
 }

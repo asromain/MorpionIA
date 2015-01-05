@@ -22,7 +22,7 @@ private:
 	Grid * gr;
 	int ww, wh;   // windowsWidth et windowsHeight
 	int status = 0, gagnant = 0;
-	bool j1ordi = true, turn = 0, curseur = 0;
+	bool j1ordi = true, turn = false, curseur = 0;
 
 public:
 
@@ -35,7 +35,7 @@ public:
 	void setWh(int n);
 	int getStatus();
 	bool getJ1ordi(); 
-	bool getTurn();
+	bool getTurnJ2();
 	void setStatus(int n);
 	void changeTurn();
 	void changeJ1ordi();
@@ -45,6 +45,7 @@ public:
 	void setGagnant(int n);
 	void iaTurn(int j);
 	void isGameOver();
+	void print();
 
 	void reset();
 

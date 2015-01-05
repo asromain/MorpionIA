@@ -25,12 +25,13 @@ public:
 	~Grid();
 	void draw();
 
-	Case * getCase(float coordX_, float coordY_, int ww_, int wh_);     // renvoie la case cliquée par rapport aux coordonnées coordX et coordY
+	Case * getCase(float fx, float fy);     // renvoie la case cliquée par rapport aux coordonnées coordX et coordY
 	Case * getCase(int line, int col);                                  // renvoie la case du tableau de jeu par rapport à l'indice ligne et colonne
 	int getLine(float coordX_, float coordY_, int ww_, int wh_);
 	int getCol(float coordX_, float coordY_, int ww_, int wh_);
 	vector<vector <int>*> getMatrix();
-	void action(int x, int y, int ww, int wh, int joueur);
+	void action(float fx, float fy, int joueur);
 	void action(int x, int y, int joueur);
+	void print();
 
 };
