@@ -30,8 +30,8 @@ public:
 	int getLine(float coordX_, float coordY_, int ww_, int wh_);
 	int getCol(float coordX_, float coordY_, int ww_, int wh_);
 	vector<vector <int>*> getMatrix();
-	void action(float fx, float fy, int joueur);
-	void action(int x, int y, int joueur);
+	void action(int idCol, int idLine, int joueur);
+	void actionIA(int x, int y, int joueur);
 	void print();
 
 };

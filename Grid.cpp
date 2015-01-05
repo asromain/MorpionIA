@@ -64,18 +64,17 @@ vector<vector<int>*> Grid::getMatrix()
 {
 	return matrix;
 }
-void Grid::action(float fx, float fy, int joueur)
+void Grid::action(int idCol, int idLine, int joueur)
 {
-	int idLine = (int)((fy + 1)/ caseHeight);     // récupération de l'indice de la ligne
-	int idCol = (int)((fx + 1)/ caseWidth);       // récupération de l'indice de la colonne
 	cout << "idLine : " << idLine << "idCol : " << idCol << endl;
 	matrix[idLine]->at(idCol) = joueur;
 	board[idLine][idCol]->setType(joueur);
 }
-void Grid::action(int x, int y, int joueur)
+void Grid::actionIA(int x, int y, int joueur)
 {
-	matrix[x]->at(y) = joueur;
-	board[x][y]->setType(joueur);
+	cout << "actioIA, x : " << x << "y : " << y << endl;
+	matrix[y]->at(x) = joueur;
+	board[y][x]->setType(joueur);
 }
 
 void Grid::print()

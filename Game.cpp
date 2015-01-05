@@ -16,10 +16,12 @@ void Game::idle()
 	case 1:
 		if (ctrl->getJ1ordi() != ctrl->getTurnJ2())
 		{
+			cout << endl << endl << "l'ordi joue" << endl;
 			ctrl->print();
 			ctrl->iaTurn(ctrl->getTurnJ2() + 1);
 			ctrl->isGameOver();
 			ctrl->changeTurn();
+			ctrl->print();
 		}
 		break;
 	default:

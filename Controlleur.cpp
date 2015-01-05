@@ -70,13 +70,14 @@ void Controlleur::setGagnant(int n)
 }
 void Controlleur::iaTurn(int j)
 {
-	int res[2];
-	ia->play(gr->getMatrix(), DIM, res, j);
-	gr->action(res[0], res[1], j);
+	int* res = ia->play(gr->getMatrix(), DIM, j);
+	gr->actionIA(res[0], res[1], j);
+	delete[] res;
 }
 void Controlleur::isGameOver()
 {
 	//ligne (à généraliser)
+	bool egalite = true;
 	for (int i = 0; i < DIM; i++) {
 		int t = gr->getCase(i, 0)->getType();
 		int lg = 0;
@@ -89,13 +90,23 @@ void Controlleur::isGameOver()
 				t = gr->getCase(i, j)->getType();
 				lg = 1;
 			}
+			if (gr->getCase(i, j)->getType() == 0)
+			{
+				egalite = false;
+			}
 			if (lg == LONG_TO_WIN && t != 0)
 			{
 				setStatus(2);
 				gagnant = turn + 1;
-				changeTurn();
+				return;
 			}
 		}
+	}
+	if (egalite)
+	{
+		setStatus(2);
+		gagnant = 0;
+		return;
 	}
 	//colonne (à généraliser)
 	for (int j = 0; j < DIM; j++) {
@@ -114,7 +125,7 @@ void Controlleur::isGameOver()
 			{
 				setStatus(2);
 				gagnant = turn + 1;
-				changeTurn();
+				return;
 			}
 		}
 	}
@@ -129,12 +140,17 @@ void Controlleur::print()
 		", curseur : " << curseur << endl;
 	gr->print();
 }
+int Controlleur::getDim()
+{
+	return DIM;
+}
 
 void Controlleur::reset()
 {
 	delete gr;
 	gr = new Grid();
 	turn = 0;
+	gagnant = 0;
 }
 
 int Controlleur::relativeToPixelX(float n)

@@ -21,7 +21,7 @@ void Graphic::Draw()
 		ctrl->getGr()->draw();
 		break;
 	case 2:
-		background();
+		ctrl->getGr()->draw();
 		gameOver();
 		break;
 	default:
@@ -77,14 +77,33 @@ void Graphic::menu(int c)
 }
 void Graphic::gameOver()
 {
-	std::stringstream out;
-	if ((ctrl->getJ1ordi() && !ctrl->getGagnant()) || (!ctrl->getJ1ordi() && ctrl->getGagnant()))
+	switch (ctrl->getGagnant())
 	{
-		GraphicPrimitives::drawText2D("L'ORDI A GAGNE", -0.15, 0.3, 1.0, 1.0, 1.0);
-	}
-	else
-	{
-		GraphicPrimitives::drawText2D("LE JOUEUR A GAGNE", -0.2, 0.3, 1.0, 1.0, 1.0);
+	case 0:
+		GraphicPrimitives::drawText2D("EGALITE", -0.1, 0.3, 1.0, 1.0, 1.0);
+		break;
+	case 1:
+		if (ctrl->getJ1ordi())
+		{
+			GraphicPrimitives::drawText2D("L'ORDI A GAGNE", -0.15, 0.3, 1.0, 1.0, 1.0);
+		}
+		else
+		{
+			GraphicPrimitives::drawText2D("LE JOUEUR A GAGNE", -0.2, 0.3, 1.0, 1.0, 1.0);
+		}
+		break;
+	case 2:
+		if (!ctrl->getJ1ordi())
+		{
+			GraphicPrimitives::drawText2D("L'ORDI A GAGNE", -0.15, 0.3, 1.0, 1.0, 1.0);
+		}
+		else
+		{
+			GraphicPrimitives::drawText2D("LE JOUEUR A GAGNE", -0.2, 0.3, 1.0, 1.0, 1.0);
+		}
+		break;
+	default:
+		break;
 	}
 	GraphicPrimitives::drawText2D("Press any key to continue", -0.3, -0.4, 1.0, 1.0, 1.0);
 }

@@ -17,6 +17,6 @@ public:
 
 	IA();
 
-	void play(vector<vector<int>*> matrix, int dim, int* res, int j);
+	int* play(vector<vector<int>*> matrix, int dim, int j);
 
 };

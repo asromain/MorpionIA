@@ -53,14 +53,16 @@ void Control::KeyboardCallback(unsigned char key, int x, int y)
 */
 void Control::MouseCallback(int button, int state, int x, int y)
 {
-	float fx = ctrl->pixelToRelativeX(x);
-	float fy = ctrl->pixelToRelativeY(y);
-	std::cout << "x = " << x << ", y = " << y << ", fx = " << fx << ", fy = " << fy << endl;
-	switch (ctrl->getStatus())
+	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
 	{
-	case 0:
-		if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+		int line;
+		int col;
+		float fx = ctrl->pixelToRelativeX(x);
+		float fy = ctrl->pixelToRelativeY(y);
+		std::cout << "click  ! " << endl << "x = " << x << ", y = " << y << ", fx = " << fx << ", fy = " << fy << endl;
+		switch (ctrl->getStatus())
 		{
+		case 0:
 			if (-0.17 < fx && fx < 0.1 && -0.02 < fy && fy < 0.07)
 			{
 				if (!ctrl->getJ1ordi()) ctrl->changeJ1ordi();
@@ -73,43 +75,32 @@ void Control::MouseCallback(int button, int state, int x, int y)
 				ctrl->reset();
 				ctrl->setStatus(1);
 			}
-		}
-		break;
-	case 1:
-		if (ctrl->getJ1ordi() == ctrl->getTurnJ2())
-		{
-			if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+			break;
+		case 1:
+			if (ctrl->getJ1ordi() == ctrl->getTurnJ2())
 			{
-				Case * c = ctrl->getGr()->getCase(fx, fy);
+				cout << endl << endl << "click sur la grille" << endl;
+				col = (x / (ctrl->getWw() / ctrl->getDim()));
+				line = (y / (ctrl->getWh() / ctrl->getDim()));
+				cout << "col : " << col << ", line : " << line << endl;
+				ctrl->print();
+				Case * c = ctrl->getGr()->getCase(line, col);
 				if (c->getType() == 0)
 				{
-					ctrl->print();
-					float posX = c->getPosX();
-					float posY = c->getPosY();
-					float width = c->getWidth();
-					float height = c->getHeight();
-					ctrl->getGr()->action(fx, fy, ctrl->getTurnJ2() + 1);
+					ctrl->getGr()->action(col, line, ctrl->getTurnJ2() + 1);
 					ctrl->isGameOver();
 					ctrl->changeTurn();
+					ctrl->print();
 				}
 			}
+			break;
+		case 2:
+			ctrl->setStatus(0);
+			break;
+		default:
+			ctrl->setStatus(0);
+			break;
 		}
-		// pour debug
-		if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN)
-		{
-			int line = ctrl->getGr()->getLine(x, y, ctrl->getWw(), ctrl->getWh());
-			int col = ctrl->getGr()->getCol(x, y, ctrl->getWw(), ctrl->getWh());
-
-			std::cout << "x:" << x << "; y:" << y << std::endl;
-			std::cout << "line:" << line << "; col:" << col << std::endl;
-		}
-		break;
-	case 2:
-		ctrl->setStatus(0);
-		break;
-	default:
-		ctrl->setStatus(0);
-		break;
 	}
 }
 

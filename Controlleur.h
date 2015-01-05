@@ -46,6 +46,7 @@ public:
 	void iaTurn(int j);
 	void isGameOver();
 	void print();
+	int getDim();
 
 	void reset();
 
