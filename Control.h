@@ -18,7 +18,10 @@ private:
 
 public:
 
-	Control(Controlleur *ctrl_) : ctrl(ctrl_) {}
+	Control(Controlleur *ctrl_);
+
 	virtual void MouseCallback(int button, int state, int x, int y);
+	virtual void KeyboardCallback(unsigned char key, int x, int y);
+	virtual void specialCallback(int key, int x, int y);
 
 };

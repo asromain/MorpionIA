@@ -1,5 +1,6 @@
 #pragma once
 #include "GraphicPrimitives.h"
+using namespace std;
 
 
 /***************************************
@@ -15,7 +16,7 @@ private:
 	float posX, posY;
 	float width, height;
 	float r, g, b;
-	char type;            // type n = no type (case innoccupée) || type h = human || type c = computer (ia) 
+	int type;            // type 0 = no type (case innoccupée) || type 1 = J1 || type 2 = J2
 
 public:
 
@@ -27,6 +28,6 @@ public:
 	float getWidth();
 	float getHeight();
 	char getType();
-	void setType(char type_);
+	void setType(int type_);
 
 };

@@ -1,22 +1,29 @@
 #include "Grid.h"
+using namespace std;
 
 
 //Constructeur de la grille de jeu board
-Grid::Grid() : caseWidth(2.0 / DIM), caseHeight(2.0 / DIM)     
+Grid::Grid() : caseWidth(2.0 / DIM), caseHeight(2.0 / DIM)
 {
+	cout << "Creating Grid" << endl;
 	int numCase = 0;
 	for (int i = 0; i < DIM; i++) {
+		matrix.push_back(new vector<int>);
 		for (int j = 0; j < DIM; j++) {
 			//* pour chaque colonne on a les mêmes valeurs de posX : caseWidth * j - 1
 			//  pour chaque ligne on a les même valeurs de posY    : -caseHeight * i + (1 - caseHeight)       
 			//     --> (1 - caseHeight) pour commencer à partir du haut de la fenêtre                    */
 			board[i][j] = new Case(caseWidth * j - 1, -caseHeight * i + (1 - caseHeight), caseWidth, caseHeight);
+			matrix[i]->push_back(0);
 		}
 	}
 }
 
 //Destructeur
-Grid::~Grid() {}
+Grid::~Grid() 
+{
+
+}
 
 //Dessine le damier
 void Grid::draw()
@@ -27,12 +34,12 @@ void Grid::draw()
 		}
 	}
 }
- 
+
 //Récupération de la case cliquée
 Case * Grid::getCase(float coordX_, float coordY_, int ww_, int wh_)
 {
 	int ww = ww_ / 2;
-	int wh = wh_ / 2; 
+	int wh = wh_ / 2;
 	int idLine = (int)((((coordY_ - wh) / wh) + 1) / caseHeight);     // récupération de l'indice de la ligne
 	int idCol = (int)((((coordX_ - ww) / ww) + 1) / caseWidth);       // récupération de l'indice de la colonne
 
@@ -54,4 +61,22 @@ Case * Grid::getCase(int line, int col)
 {
 	assert(line < DIM && col < DIM);
 	return board[line][col];
+}
+vector<vector<int>*> Grid::getMatrix()
+{
+	return matrix;
+}
+void Grid::action(int x, int y, int ww, int wh, int joueur)
+{
+	int w = ww / 2;
+	int h = wh / 2;
+	int idLine = (int)((((y - h) / h) + 1) / caseHeight);     // récupération de l'indice de la ligne
+	int idCol = (int)((((x - w) / w) + 1) / caseWidth);       // récupération de l'indice de la colonne
+	matrix[idLine]->at(idCol) = joueur;
+	board[idLine][idCol]->setType(joueur);
+}
+void Grid::action(int x, int y, int joueur)
+{
+	matrix[x]->at(y) = joueur;
+	board[x][y]->setType(joueur);
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include "Engine.h"
 #include "Controlleur.h"
+using namespace std;
 
 
 /***************************************
@@ -17,7 +18,7 @@ private:
 
 public:
 		
-	Game(Controlleur *ctrl_) : ctrl(ctrl_) {}
+	Game(Controlleur *ctrl_);
 	virtual void idle();
 	// testByLine
 	// testByCol

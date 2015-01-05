@@ -1,5 +1,9 @@
 #pragma once
 #include <iostream>
+#include <string>
+#include <cstring>
+#include <sstream>
+#include <stdio.h>
 #include "Engine.h"
 #include "GraphicPrimitives.h"
 #include "Controlleur.h"
@@ -18,9 +22,14 @@ private:
 
 	Controlleur *ctrl;
 
+	void background();
+	void menu(int c);
+	void gameOver();
+
 public:
 
-	Graphic(Controlleur *ctrl_) : ctrl(ctrl_) {}
+	Graphic(Controlleur *ctrl_);
+
 	virtual void Draw();
 	virtual void reshape(int ww_, int wh_);
 

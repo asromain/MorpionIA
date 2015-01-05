@@ -3,22 +3,14 @@
 #include "Graphic.h"
 #include "Game.h"
 #include "Control.h"
-#include "Pawn.h"
 #include "Controlleur.h"
 using namespace std;
-
-#define WWIDTH 800
-#define WHEIGHT 600
-
 
 int main(int argc, char * argv[])
 {
     Engine e(argc,argv);
-    
-	Grid * gr = new Grid();
-	vector<Pawn *> pawns;
 
-	Controlleur* ctrl = new Controlleur(gr, WWIDTH, WHEIGHT, pawns);
+	Controlleur* ctrl = new Controlleur();
     
 	Graphic * ge = new Graphic(ctrl);
 	Control * ce = new Control(ctrl);
@@ -30,7 +22,6 @@ int main(int argc, char * argv[])
 	
     e.start();
 
-	delete gr;
 	delete ctrl;
 
     return 0;
