@@ -2,7 +2,7 @@
 
 Minmax::Minmax(int dim_) : dim(dim_), IA(dim_) {}
 
-int* Minmax::play(int** matrix, int dim, int *j_)
+int* Minmax::play(int** matrix, int *j_)
 {
 	int maxcourant = INT_MIN;
 	int* res = new int[2];
@@ -13,7 +13,7 @@ int* Minmax::play(int** matrix, int dim, int *j_)
 			if (matrix[i][j] == 0)
 			{
 				matrix[i][j] = *j_;
-				int max = calculMax(matrix, dim, 5, j_);
+				int max = calculMax(matrix, 5, j_);
 				if (max > maxcourant)
 				{
 					maxcourant = max;
@@ -26,12 +26,12 @@ int* Minmax::play(int** matrix, int dim, int *j_)
 	}
 	return res;
 }
-int Minmax::calculMin(int** matrix, int dim, int prof, int *j_)
+int Minmax::calculMin(int** matrix, int prof, int *j_)
 {
 	int min = INT_MAX;
 	bool pasjoue = true;
 
-	if (prof == 0) return eval(matrix, dim, j_);
+	if (prof == 0) return eval(matrix, j_);
 
 	for (int i = 0; i < dim; i++)
 	{
@@ -41,21 +41,21 @@ int Minmax::calculMin(int** matrix, int dim, int prof, int *j_)
 			{
 				pasjoue = false;
 				matrix[i][j] = *j_;
-				int tmp = calculMax(matrix, dim, 5, j_);
+				int tmp = calculMax(matrix, 5, j_);
 				if (tmp < min) min = tmp;
 				matrix[i][j] = 0;
 			}
 		}
 	}
-	if (pasjoue) return eval(matrix, dim, j_);
+	if (pasjoue) return eval(matrix, j_);
 	return min;
 }
-int Minmax::calculMax(int** matrix, int dim, int prof, int *j_)
+int Minmax::calculMax(int** matrix, int prof, int *j_)
 {
 	int max = INT_MIN;
 	bool pasjoue = true;
 
-	if (prof == 0) return eval(matrix, dim, j_);
+	if (prof == 0) return eval(matrix, j_);
 
 	for (int i = 0; i < dim; i++)
 	{
@@ -65,17 +65,17 @@ int Minmax::calculMax(int** matrix, int dim, int prof, int *j_)
 			{
 				pasjoue = false;
 				matrix[i][j] = *j_;
-				int tmp = calculMin(matrix, dim, 5, j_);
+				int tmp = calculMin(matrix, 5, j_);
 				if (tmp > max) max = tmp;
 				matrix[i][j] = 0;
 			}
 		}
 	}
-	if (pasjoue) return eval(matrix, dim, j_);
+	if (pasjoue) return eval(matrix, j_);
 	return max;
 }
 
-int Minmax::eval(int** matrix, int dim, int *j_)
+int Minmax::eval(int** matrix, int *j_)
 {
 	
 }
