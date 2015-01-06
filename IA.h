@@ -13,9 +13,11 @@ class IA
 
 private:
 
+	int dim;
+
 public:
 
-	IA();
+	IA(int dim_);
 
 	virtual int* play(int** matrix, int dim, int *j);
 };

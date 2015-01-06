@@ -4,8 +4,6 @@
 #include <vector>
 using namespace std;
 
-#define DIM 3
-
 /***
 Classe qui permet de créer le Damier, utilise la classe Case.
 */
@@ -15,13 +13,14 @@ class Grid
 
 private:
 
-	Case * board[DIM][DIM];         // le tableau de jeu qui comporte les cases
+	int dim;           // dimension de la grille
+	Case*** board;    // le tableau de jeu qui comporte les cases
 	int** matrix;
-	float caseWidth, caseHeight;    // largeur et hauteur des cases
+	float caseWidth, caseHeight;   // largeur et hauteur des cases
 
 public:
 
-	Grid();
+	Grid(int dim_);
 	~Grid();
 	void draw();
 

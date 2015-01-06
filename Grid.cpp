@@ -3,17 +3,18 @@ using namespace std;
 
 
 //Constructeur de la grille de jeu board
-Grid::Grid() : caseWidth(2.0 / DIM), caseHeight(2.0 / DIM)
+Grid::Grid(int dim_) : dim(dim_), caseWidth(2.0 / dim_), caseHeight(2.0 / dim_)
 {
-	matrix = new int*[DIM];
-	for (int i = 0; i < DIM; i++)
+	board = new Case**[dim];
+	matrix = new int*[dim];
+	for (int i = 0; i < dim; i++)
 	{
-		matrix[i] = new int[DIM];
+		board[i] = new Case*[dim];
+		matrix[i] = new int[dim];
 	}
-	cout << "Creating Grid" << endl;
 	int numCase = 0;
-	for (int i = 0; i < DIM; i++) {
-		for (int j = 0; j < DIM; j++) {
+	for (int i = 0; i < dim; i++) {
+		for (int j = 0; j < dim; j++) {
 			//* pour chaque colonne on a les mêmes valeurs de posX : caseWidth * j - 1
 			//  pour chaque ligne on a les même valeurs de posY    : -caseHeight * i + (1 - caseHeight)       
 			//     --> (1 - caseHeight) pour commencer à partir du haut de la fenêtre                    */
@@ -21,12 +22,13 @@ Grid::Grid() : caseWidth(2.0 / DIM), caseHeight(2.0 / DIM)
 			matrix[i][j] = 0;
 		}
 	}
+	cout << "Creating Grid" << endl;
 }
 
 //Destructeur
 Grid::~Grid() 
 {
-	for (int i = 0; i < DIM; i++)
+	for (int i = 0; i < dim; i++)
 	{
 		delete [] matrix[i];
 	}
@@ -35,8 +37,8 @@ Grid::~Grid()
 //Dessine le damier
 void Grid::draw()
 {
-	for (int i = 0; i < DIM; i++) {
-		for (int j = 0; j < DIM; j++) {
+	for (int i = 0; i < dim; i++) {
+		for (int j = 0; j < dim; j++) {
 			board[i][j]->draw();
 		}
 	}
@@ -45,7 +47,7 @@ void Grid::draw()
 //Récupération de la case cliquée
 Case * Grid::getCase(float fx, float fy)
 {
-	int idLine = (int)((fy + 1) / caseHeight);     // récupération de l'indice de la ligne
+	int idLine = (int)((fy + 1) / caseHeight);    // récupération de l'indice de la ligne
 	int idCol = (int)((fx + 1)/ caseWidth);       // récupération de l'indice de la colonne
 
 	return board[idLine][idCol];
@@ -64,7 +66,7 @@ int Grid::getCol(float coordX_, float coordY_, int ww_, int wh_) {
 // renvoie la case du tableau de jeu par rapport à l'indice ligne et colonne
 Case * Grid::getCase(int line, int col)
 {
-	assert(line < DIM && col < DIM);
+	assert(line < dim && col < dim);
 	return board[line][col];
 }
 int** Grid::getMatrix()
@@ -86,18 +88,18 @@ void Grid::actionIA(int x, int y, int joueur)
 
 void Grid::print()
 {
-	for (int i = 0; i < DIM; i++) 
+	for (int i = 0; i < dim; i++)
 	{
-		for (int j = 0; j < DIM * 2; j++) 
+		for (int j = 0; j < dim * 2; j++)
 		{
-			if (j == DIM) cout << "    ";
-			if (j < DIM)
+			if (j == dim) cout << "    ";
+			if (j < dim)
 			{
 				cout << matrix[i][j] << " ";
 			}
 			else
 			{
-				cout << board[i][j-DIM]->getType() << " ";
+				cout << board[i][j - dim]->getType() << " ";
 			}
 		}
 		cout << endl;

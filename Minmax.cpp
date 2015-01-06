@@ -1,6 +1,6 @@
 #include "Minmax.h"
 
-Minmax::Minmax() : IA() {}
+Minmax::Minmax(int dim_) : dim(dim_), IA(dim_) {}
 
 int* Minmax::play(int** matrix, int dim, int *j_)
 {

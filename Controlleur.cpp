@@ -1,7 +1,7 @@
 #include "Controlleur.h"
 using namespace std;
 
-Controlleur::Controlleur()
+Controlleur::Controlleur(int dim_) : dim(dim_)
 {
 	cout << "Creating controller" << endl;
 	ww = WWIDTH;
@@ -70,7 +70,7 @@ void Controlleur::setGagnant(int n)
 }
 void Controlleur::iaTurn(int j)
 {
-	int* res = ia->play(gr->getMatrix(), DIM, &j);
+	int* res = ia->play(gr->getMatrix(), dim, &j);
 	gr->actionIA(res[0], res[1], j);
 	delete[] res;
 }
@@ -78,10 +78,10 @@ void Controlleur::isGameOver()
 {
 	//ligne (à généraliser)
 	bool egalite = true;
-	for (int i = 0; i < DIM; i++) {
+	for (int i = 0; i < dim; i++) {
 		int t = gr->getCase(i, 0)->getType();
 		int lg = 0;
-		for (int j = 0; j < DIM; j++) {
+		for (int j = 0; j < dim; j++) {
 			if (t == gr->getCase(i, j)->getType()) {
 				lg++;
 			}
@@ -94,7 +94,7 @@ void Controlleur::isGameOver()
 			{
 				egalite = false;
 			}
-			if (lg == LONG_TO_WIN && t != 0)
+			if (lg == dim && t != 0)
 			{
 				setStatus(2);
 				gagnant = turn + 1;
@@ -103,10 +103,10 @@ void Controlleur::isGameOver()
 		}
 	}
 	//colonne (à généraliser)
-	for (int j = 0; j < DIM; j++) {
+	for (int j = 0; j < dim; j++) {
 		int t = gr->getCase(0, j)->getType();
 		int lg = 0;
-		for (int i = 0; i < DIM; i++) {
+		for (int i = 0; i < dim; i++) {
 			if (t == gr->getCase(i, j)->getType()) {
 				lg++;
 			}
@@ -115,7 +115,7 @@ void Controlleur::isGameOver()
 				t = gr->getCase(i, j)->getType();
 				lg = 1;
 			}
-			if (lg == LONG_TO_WIN && t != 0)
+			if (lg == dim && t != 0)
 			{
 				setStatus(2);
 				gagnant = turn + 1;
@@ -123,11 +123,11 @@ void Controlleur::isGameOver()
 			}
 		}
 	}
-	for (int x = 0; x < DIM; x++) {     // pour tester
+	for (int x = 0; x < dim; x++) {     // pour tester
 		int lg = 0;
 		//diagonale descendante
 		int t = gr->getCase(0, 0)->getType();
-		for (int i = 0; i < DIM; i++) {
+		for (int i = 0; i < dim; i++) {
 			if (t == gr->getCase(i, i)->getType()) {
 				lg++;
 			}
@@ -136,7 +136,7 @@ void Controlleur::isGameOver()
 				t = gr->getCase(i, i)->getType();
 				lg = 1;
 			}
-			if (lg == LONG_TO_WIN && t != 0)
+			if (lg == dim && t != 0)
 			{
 				setStatus(2);
 				gagnant = turn + 1;
@@ -144,9 +144,9 @@ void Controlleur::isGameOver()
 			}
 		}
 		//diagonale montante
-		t = gr->getCase(DIM - 1, 0)->getType();
+		t = gr->getCase(dim - 1, 0)->getType();
 		int k = 2;
-		for (int i = 0; i < DIM; i++) {
+		for (int i = 0; i < dim; i++) {
 			if (t == gr->getCase(i, k)->getType()) {
 				lg++;
 				k--;
@@ -156,7 +156,7 @@ void Controlleur::isGameOver()
 				t = gr->getCase(i, k)->getType();
 				lg = 1;
 			}
-			if (lg == LONG_TO_WIN && t != 0)
+			if (lg == dim && t != 0)
 			{
 				setStatus(2);
 				gagnant = turn + 1;
@@ -183,13 +183,13 @@ void Controlleur::print()
 }
 int Controlleur::getDim()
 {
-	return DIM;
+	return dim;
 }
 
 void Controlleur::reset()
 {
 	delete gr;
-	gr = new Grid();
+	gr = new Grid(dim);
 	turn = 0;
 	gagnant = 0;
 }

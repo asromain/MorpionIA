@@ -1,7 +1,7 @@
 #include "IA.h"
 using namespace std;
 
-IA::IA()
+IA::IA(int dim_)
 {
 	cout << "Creating AI" << endl;
 }

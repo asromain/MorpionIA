@@ -5,8 +5,6 @@ using namespace std;
 
 #define WWIDTH 800
 #define WHEIGHT 600
-#define DIM 3
-#define LONG_TO_WIN 3
 
 /***************************************
 Permet de gérer toutes les
@@ -18,7 +16,8 @@ class Controlleur
 
 private:
 
-	IA* ia = new IA();
+	int dim;
+	IA* ia = new IA(dim);
 	Grid * gr;
 	int ww, wh;   // windowsWidth et windowsHeight
 	int status = 0, gagnant = 0;
@@ -26,7 +25,7 @@ private:
 
 public:
 
-	Controlleur();
+	Controlleur(int dim_);
 
 	Grid* getGr();
 	int getWw();

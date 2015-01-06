@@ -7,11 +7,13 @@
 #include "Controlleur.h"
 using namespace std;
 
+
 int main(int argc, char * argv[])
 {
     Engine e(argc,argv);
 
-	Controlleur* ctrl = new Controlleur();
+	int dim = 3;
+	Controlleur* ctrl = new Controlleur(dim);
     
 	Graphic * ge = new Graphic(ctrl);
 	Control * ce = new Control(ctrl);
