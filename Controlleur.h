@@ -16,7 +16,7 @@ class Controlleur
 
 private:
 
-	int dim;
+	int dim = 3, long_win = 3;
 	IA* ia = new IA(dim);
 	Grid * gr;
 	int ww, wh;   // windowsWidth et windowsHeight
@@ -25,7 +25,7 @@ private:
 
 public:
 
-	Controlleur(int dim_);
+	Controlleur();
 
 	Grid* getGr();
 	int getWw();

@@ -1,7 +1,7 @@
 #include "Controlleur.h"
 using namespace std;
 
-Controlleur::Controlleur(int dim_) : dim(dim_)
+Controlleur::Controlleur()
 {
 	cout << "Creating controller" << endl;
 	ww = WWIDTH;
@@ -79,6 +79,8 @@ void Controlleur::isGameOver()
 	bool egalite = true;
 	int i, j;      // indices boucle
 	int d, t, lg;  // dim-1, type, longueur
+	int lgup, lgdown;
+	int tup, tdown;
 
 	// par ligne
 	for (i = 0; i < dim; i++) {
@@ -97,7 +99,7 @@ void Controlleur::isGameOver()
 			{
 				egalite = false;
 			}
-			if (lg == dim && t != 0)
+			if (lg == long_win && t != 0)
 			{
 				setStatus(2);
 				gagnant = turn + 1;
@@ -120,7 +122,7 @@ void Controlleur::isGameOver()
 				t = gr->getCase(i, j)->getType();
 				lg = 1;
 			}
-			if (lg == dim && t != 0)
+			if (lg == long_win && t != 0)
 			{
 				setStatus(2);
 				gagnant = turn + 1;
@@ -133,19 +135,29 @@ void Controlleur::isGameOver()
 	// par diagonales
 	for (j = 0; j < dim; j++) 
 	{
-		lg = 0;
+		lgup = 0;
+		lgdown = 0;
 		//diagonale descendante
-		int t = gr->getCase(0, 0)->getType();
-		for (int i = 0; i < dim; i++) {
-			if (t == gr->getCase(i, i)->getType()) {
-				lg++;
+		tup = gr->getCase(0, j)->getType();
+		tdown = gr->getCase(dim-1, j)->getType();
+		for (int i = 0; j+i < dim; i++) {
+			if (tup == gr->getCase(j+i, i)->getType()) {
+				lgup++;
 			}
 			else
 			{
-				t = gr->getCase(i, i)->getType();
-				lg = 1;
+				tup = gr->getCase(j+i, i)->getType();
+				lgup = 1;
 			}
-			if (lg == dim && t != 0)
+			if (tdown == gr->getCase(j+i, dim - i-1)->getType()) {
+				lgdown++;
+			}
+			else
+			{
+				tdown = gr->getCase(j + i, dim - i-1)->getType();
+				lgdown = 1;
+			}
+			if ((lgup == long_win || lgdown == long_win) && t != 0)
 			{
 				setStatus(2);
 				gagnant = turn + 1;
@@ -154,23 +166,33 @@ void Controlleur::isGameOver()
 			}
 		}
 		//diagonale montante
-		d = dim - 1;
-		t = gr->getCase(d, 0)->getType();
-		for (int i = 0; i < dim; i++) {
-			if (t == gr->getCase(i, d)->getType()) {
-				lg++;
-				d--;
+		lgup = 0;
+		lgdown = 0;
+		//diagonale descendante
+		tup = gr->getCase(0, j)->getType();
+		tdown = gr->getCase(dim-1, j)->getType();
+		for (int i = 0; j - i > 0; i++) {
+			if (tup == gr->getCase(j-i, i)->getType()) {
+				lgup++;
 			}
 			else
 			{
-				t = gr->getCase(i, d)->getType();
-				lg = 1;
+				tup = gr->getCase(j - i, i)->getType();
+				lgup = 1;
 			}
-			if (lg == dim && t != 0)
+			if (tdown == gr->getCase(j - i, dim - i-1)->getType()) {
+				lgdown++;
+			}
+			else
+			{
+				tdown = gr->getCase(j - i, dim - i-1)->getType();
+				lgdown = 1;
+			}
+			if ((lgup == long_win || lgdown == long_win) && t != 0)
 			{
 				setStatus(2);
 				gagnant = turn + 1;
-				cout << endl << "===> gagnant par diagonale montante" << endl << endl;
+				cout << endl << "===> gagnant par diagonale descendante" << endl << endl;
 				return;
 			}
 		}

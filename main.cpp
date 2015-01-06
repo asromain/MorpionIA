@@ -13,7 +13,7 @@ int main(int argc, char * argv[])
     Engine e(argc,argv);
 
 	int dim = 3;
-	Controlleur* ctrl = new Controlleur(dim);
+	Controlleur* ctrl = new Controlleur();
     
 	Graphic * ge = new Graphic(ctrl);
 	Control * ce = new Control(ctrl);
