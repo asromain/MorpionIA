@@ -102,12 +102,6 @@ void Controlleur::isGameOver()
 			}
 		}
 	}
-	if (egalite)
-	{
-		setStatus(2);
-		gagnant = 0;
-		return;
-	}
 	//colonne (à généraliser)
 	for (int j = 0; j < DIM; j++) {
 		int t = gr->getCase(0, j)->getType();
@@ -129,7 +123,54 @@ void Controlleur::isGameOver()
 			}
 		}
 	}
-	//diagonale (à généraliser)
+	for (int x = 0; x < DIM; x++) {     // pour tester
+		int lg = 0;
+		//diagonale descendante
+		int t = gr->getCase(0, 0)->getType();
+		for (int i = 0; i < DIM; i++) {
+			if (t == gr->getCase(i, i)->getType()) {
+				lg++;
+			}
+			else
+			{
+				t = gr->getCase(i, i)->getType();
+				lg = 1;
+			}
+			if (lg == LONG_TO_WIN && t != 0)
+			{
+				setStatus(2);
+				gagnant = turn + 1;
+				return;
+			}
+		}
+		//diagonale montante
+		t = gr->getCase(DIM - 1, 0)->getType();
+		int k = 2;
+		for (int i = 0; i < DIM; i++) {
+			if (t == gr->getCase(i, k)->getType()) {
+				lg++;
+				k--;
+			}
+			else
+			{
+				t = gr->getCase(i, k)->getType();
+				lg = 1;
+			}
+			if (lg == LONG_TO_WIN && t != 0)
+			{
+				setStatus(2);
+				gagnant = turn + 1;
+				return;
+			}
+		}
+	}
+	
+	if (egalite)
+	{
+		setStatus(2);
+		gagnant = 0;
+		return;
+	}
 }
 void Controlleur::print() 
 {
