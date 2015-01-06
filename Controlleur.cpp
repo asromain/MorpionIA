@@ -157,7 +157,7 @@ void Controlleur::isGameOver()
 				tdown = gr->getCase(j + i, dim - i-1)->getType();
 				lgdown = 1;
 			}
-			if ((lgup == long_win || lgdown == long_win) && t != 0)
+			if ((lgup == long_win && tup != 0) || (lgdown == long_win && tdown != 0))
 			{
 				setStatus(2);
 				gagnant = turn + 1;
@@ -188,7 +188,7 @@ void Controlleur::isGameOver()
 				tdown = gr->getCase(j - i, dim - i-1)->getType();
 				lgdown = 1;
 			}
-			if ((lgup == long_win || lgdown == long_win) && t != 0)
+			if ((lgup == long_win && tup !=0) || (lgdown == long_win && tdown != 0))
 			{
 				setStatus(2);
 				gagnant = turn + 1;
