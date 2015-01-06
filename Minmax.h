@@ -18,8 +18,8 @@ public:
 
 	Minmax();
 
-	virtual int* play(vector<vector<int>*> matrix, int dim, int *j);
-	int calculMin(vector<vector<int>*>* matrix, int dim, int prof, int *j_);
-	int calculMax(vector<vector<int>*>* matrix, int dim, int prof, int *j_);
-	int eval(vector<vector<int>*>* matrix, int dim, int *j_);
+	virtual int* play(int** matrix, int dim, int *j);
+	int calculMin(int** matrix, int dim, int prof, int *j_);
+	int calculMax(int** matrix, int dim, int prof, int *j_);
+	int eval(int** matrix, int dim, int *j_);
 };

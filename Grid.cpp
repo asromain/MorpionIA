@@ -5,16 +5,20 @@ using namespace std;
 //Constructeur de la grille de jeu board
 Grid::Grid() : caseWidth(2.0 / DIM), caseHeight(2.0 / DIM)
 {
+	matrix = new int*[DIM];
+	for (int i = 0; i < DIM; i++)
+	{
+		matrix[i] = new int[DIM];
+	}
 	cout << "Creating Grid" << endl;
 	int numCase = 0;
 	for (int i = 0; i < DIM; i++) {
-		matrix.push_back(new vector<int>);
 		for (int j = 0; j < DIM; j++) {
 			//* pour chaque colonne on a les mêmes valeurs de posX : caseWidth * j - 1
 			//  pour chaque ligne on a les même valeurs de posY    : -caseHeight * i + (1 - caseHeight)       
 			//     --> (1 - caseHeight) pour commencer à partir du haut de la fenêtre                    */
 			board[i][j] = new Case(caseWidth * j - 1, -caseHeight * i + (1 - caseHeight), caseWidth, caseHeight);
-			matrix[i]->push_back(0);
+			matrix[i][j] = 0;
 		}
 	}
 }
@@ -22,7 +26,10 @@ Grid::Grid() : caseWidth(2.0 / DIM), caseHeight(2.0 / DIM)
 //Destructeur
 Grid::~Grid() 
 {
-
+	for (int i = 0; i < DIM; i++)
+	{
+		delete [] matrix[i];
+	}
 }
 
 //Dessine le damier
@@ -60,20 +67,20 @@ Case * Grid::getCase(int line, int col)
 	assert(line < DIM && col < DIM);
 	return board[line][col];
 }
-vector<vector<int>*> Grid::getMatrix()
+int** Grid::getMatrix()
 {
 	return matrix;
 }
 void Grid::action(int idCol, int idLine, int joueur)
 {
 	cout << "idLine : " << idLine << "idCol : " << idCol << endl;
-	matrix[idLine]->at(idCol) = joueur;
+	matrix[idLine][idCol] = joueur;
 	board[idLine][idCol]->setType(joueur);
 }
 void Grid::actionIA(int x, int y, int joueur)
 {
 	cout << "actioIA, x : " << x << "y : " << y << endl;
-	matrix[x]->at(y) = joueur;
+	matrix[x][y] = joueur;
 	board[x][y]->setType(joueur);
 }
 
@@ -86,7 +93,7 @@ void Grid::print()
 			if (j == DIM) cout << "    ";
 			if (j < DIM)
 			{
-				cout << matrix[i]->at(j) << " ";
+				cout << matrix[i][j] << " ";
 			}
 			else
 			{

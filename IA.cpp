@@ -6,7 +6,7 @@ IA::IA()
 	cout << "Creating AI" << endl;
 }
 
-int* IA::play(vector<vector<int>*> matrix, int dim, int *j)
+int* IA::play(int** matrix, int dim, int *j)
 {
 	int* res = new int[2];
 	int x;
@@ -15,7 +15,7 @@ int* IA::play(vector<vector<int>*> matrix, int dim, int *j)
 	{
 		x = rand() % dim;
 		y = rand() % dim;
-	} while (matrix.at(x)->at(y) != 0);
+	} while (matrix[x][y] != 0);
 	res[0] = x;
 	res[1] = y;
 	cout << "Selected by AI, x : " << x << ", y : " << y << endl;
