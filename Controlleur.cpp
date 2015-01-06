@@ -76,12 +76,15 @@ void Controlleur::iaTurn(int j)
 }
 void Controlleur::isGameOver()
 {
-	//ligne (à généraliser)
 	bool egalite = true;
-	for (int i = 0; i < dim; i++) {
-		int t = gr->getCase(i, 0)->getType();
-		int lg = 0;
-		for (int j = 0; j < dim; j++) {
+	int i, j;      // indices boucle
+	int d, t, lg;  // dim-1, type, longueur
+
+	// par ligne
+	for (i = 0; i < dim; i++) {
+		t = gr->getCase(i, 0)->getType();
+		lg = 0;
+		for (j = 0; j < dim; j++) {
 			if (t == gr->getCase(i, j)->getType()) {
 				lg++;
 			}
@@ -98,15 +101,17 @@ void Controlleur::isGameOver()
 			{
 				setStatus(2);
 				gagnant = turn + 1;
+				cout << endl << "===> gagnant par ligne" << endl << endl;
 				return;
 			}
 		}
 	}
-	//colonne (à généraliser)
-	for (int j = 0; j < dim; j++) {
-		int t = gr->getCase(0, j)->getType();
-		int lg = 0;
-		for (int i = 0; i < dim; i++) {
+
+	//par colonnes 
+	for (j = 0; j < dim; j++) {
+		t = gr->getCase(0, j)->getType();
+		lg = 0;
+		for (i = 0; i < dim; i++) {
 			if (t == gr->getCase(i, j)->getType()) {
 				lg++;
 			}
@@ -119,12 +124,16 @@ void Controlleur::isGameOver()
 			{
 				setStatus(2);
 				gagnant = turn + 1;
+				cout << endl << "===> gagnant par colonne" << endl << endl;
 				return;
 			}
 		}
 	}
-	for (int x = 0; x < dim; x++) {     // pour tester
-		int lg = 0;
+
+	// par diagonales
+	for (j = 0; j < dim; j++) 
+	{
+		lg = 0;
 		//diagonale descendante
 		int t = gr->getCase(0, 0)->getType();
 		for (int i = 0; i < dim; i++) {
@@ -140,31 +149,33 @@ void Controlleur::isGameOver()
 			{
 				setStatus(2);
 				gagnant = turn + 1;
+				cout << endl << "===> gagnant par diagonale descendante" << endl << endl;
 				return;
 			}
 		}
 		//diagonale montante
-		t = gr->getCase(dim - 1, 0)->getType();
-		int k = 2;
+		d = dim - 1;
+		t = gr->getCase(d, 0)->getType();
 		for (int i = 0; i < dim; i++) {
-			if (t == gr->getCase(i, k)->getType()) {
+			if (t == gr->getCase(i, d)->getType()) {
 				lg++;
-				k--;
+				d--;
 			}
 			else
 			{
-				t = gr->getCase(i, k)->getType();
+				t = gr->getCase(i, d)->getType();
 				lg = 1;
 			}
 			if (lg == dim && t != 0)
 			{
 				setStatus(2);
 				gagnant = turn + 1;
+				cout << endl << "===> gagnant par diagonale montante" << endl << endl;
 				return;
 			}
 		}
 	}
-	
+
 	if (egalite)
 	{
 		setStatus(2);
@@ -172,12 +183,12 @@ void Controlleur::isGameOver()
 		return;
 	}
 }
-void Controlleur::print() 
+void Controlleur::print()
 {
-	cout << "status : " << status << 
+	cout << "status : " << status <<
 		", gagnant : " << gagnant <<
-		", j1ordi : " << j1ordi << 
-		", turn : " << turn << 
+		", j1ordi : " << j1ordi <<
+		", turn : " << turn <<
 		", curseur : " << curseur << endl;
 	gr->print();
 }
