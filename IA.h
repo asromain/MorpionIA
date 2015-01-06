@@ -19,5 +19,5 @@ public:
 
 	IA(int dim_);
 
-	virtual int* play(int** matrix, int dim, int *j);
+	virtual int* play(int** matrix, int *j);
 };

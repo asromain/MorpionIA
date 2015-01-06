@@ -1,12 +1,12 @@
 #include "IA.h"
 using namespace std;
 
-IA::IA(int dim_)
+IA::IA(int dim_) : dim(dim_)
 {
 	cout << "Creating AI" << endl;
 }
 
-int* IA::play(int** matrix, int dim, int *j)
+int* IA::play(int** matrix, int *j)
 {
 	int* res = new int[2];
 	int x;

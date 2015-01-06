@@ -70,7 +70,7 @@ void Controlleur::setGagnant(int n)
 }
 void Controlleur::iaTurn(int j)
 {
-	int* res = ia->play(gr->getMatrix(), dim, &j);
+	int* res = ia->play(gr->getMatrix(), &j);
 	gr->actionIA(res[0], res[1], j);
 	delete[] res;
 }
