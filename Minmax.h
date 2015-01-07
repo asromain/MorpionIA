@@ -16,7 +16,7 @@ private:
 
 public:
 
-	Minmax(int dim_, int long_win);
+	Minmax(int dim_, int long_win, int jr_);
 
 	virtual int* play(int** matrix, int *j);
 	int calculMin(int** matrix, int prof, int j_);

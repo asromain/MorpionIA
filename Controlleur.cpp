@@ -252,14 +252,14 @@ void Controlleur::reset()
 	if (curseurJ1 != 0)
 	{
 		j1ordi = true;
-		if (curseurJ1 == 1) ia1 = new IA(dim, long_win);
-		if (curseurJ1 == 2) ia1 = new Minmax(dim, long_win);
+		if (curseurJ1 == 1) ia1 = new IA(dim, long_win, 1);
+		if (curseurJ1 == 2) ia1 = new Minmax(dim, long_win, 1);
 	}
 	if (curseurJ2 != 0)
 	{
 		j2ordi = true;
-		if (curseurJ2 == 1) ia2 = new IA(dim, long_win);
-		if (curseurJ2 == 2) ia2 = new Minmax(dim, long_win);
+		if (curseurJ2 == 1) ia2 = new IA(dim, long_win, 2);
+		if (curseurJ2 == 2) ia2 = new Minmax(dim, long_win, 2);
 	}
 	turn = 0;
 	gagnant = 0;

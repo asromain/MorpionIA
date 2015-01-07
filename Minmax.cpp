@@ -1,6 +1,6 @@
 #include "Minmax.h"
 
-Minmax::Minmax(int dim_, int long_win_) : IA(dim_, long_win_) {}
+Minmax::Minmax(int dim_, int long_win_, int jr_) : IA(dim_, long_win_, jr_) {}
 
 Minmax::~Minmax() {}
 
@@ -31,7 +31,6 @@ int* Minmax::play(int** matrix, int *j_)
 int Minmax::calculMin(int** matrix, int prof, int j_)
 {
 	int min = INT_MAX;
-	bool pasjoue = true;
 	int* res = eval(matrix, j_);
 	if (prof == 0 || res[0] != 0) return (res[1] * -1);
 
@@ -41,7 +40,6 @@ int Minmax::calculMin(int** matrix, int prof, int j_)
 		{
 			if (matrix[i][j] == 0)
 			{
-				pasjoue = false;
 				matrix[i][j] = j_;
 				int tmp = calculMax(matrix, 5, autreJoueur(j_));
 				if (tmp < min) min = tmp;
@@ -54,7 +52,6 @@ int Minmax::calculMin(int** matrix, int prof, int j_)
 int Minmax::calculMax(int** matrix, int prof, int j_)
 {
 	int max = INT_MIN;
-	bool pasjoue = true;
 	int* res = eval(matrix, j_);
 	if (prof == 0 || res[0] != 0) return (res[1] * -1);
 
@@ -64,7 +61,6 @@ int Minmax::calculMax(int** matrix, int prof, int j_)
 		{
 			if (matrix[i][j] == 0)
 			{
-				pasjoue = false;
 				matrix[i][j] = j_;
 				int tmp = calculMin(matrix, 5, autreJoueur(j_));
 				if (tmp > max) max = tmp;
@@ -72,7 +68,6 @@ int Minmax::calculMax(int** matrix, int prof, int j_)
 			}
 		}
 	}
-	if (pasjoue) return res[1];
 	return (max * prof) * -1;
 }
 
@@ -82,23 +77,26 @@ int* Minmax::eval(int** matrix, int j_)
 	int* jf = jeuFini(matrix, j_);
 	if (jf[0] != 0)
 	{
-		if (jf[0] == 3)
+		if (jf[0] == 2)
 		{
 			//Egalite -> on retourne 0
 			jf[1] = 0;
 			return jf;
 		}
 		//Si l'IA a gagné, on retourne 1000 - le nombre de pions
-		if (jf[0] == j_)
-		{
-			jf[1] = 1000;
-			return jf;
-		}
 		else
 		{
-			//Si l'IA a perdu, on retourne -1000 + le nombre de pions
-			jf[1] = -1000;
-			return jf;
+			if (jr == j_)
+			{
+				jf[1] = 1000;
+				return jf;
+			}
+			else
+			{
+				//Si l'IA a perdu, on retourne -1000 + le nombre de pions
+				jf[1] = -1000;
+				return jf;
+			}
 		}
 	}
 	return jf;
@@ -145,14 +143,14 @@ int* Minmax::jeuFini(int** matrix, int j_)
 			// A changer le 3 en un truc plus général !!!!
 			if (lg == 3 && t != 0)
 			{
-				res[0] = t;
+				res[0] = 1;
 				return res;
 			}
 		}
 	}
 	if (egalite)
 	{
-		res[0] = t;
+		res[0] = 2;
 		return res;
 	}
 	//par colonnes 
@@ -182,7 +180,7 @@ int* Minmax::jeuFini(int** matrix, int j_)
 			// pareil !!!!
 			if (lg == 3 && t != 0)
 			{
-				res[0] = t;
+				res[0] = 1;
 				return res;
 			}
 		}
@@ -238,12 +236,12 @@ int* Minmax::jeuFini(int** matrix, int j_)
 			// a changer !!!
 			if (lgup == 3 && tup != 0)
 			{
-				res[0] = tup;
+				res[0] = 1;
 				return res;
 			}
 			if (lgdown == 3 && tdown != 0)
 			{
-				res[0] = tdown;
+				res[0] = 1;
 				return res;
 			}
 		}
@@ -295,12 +293,12 @@ int* Minmax::jeuFini(int** matrix, int j_)
 			// a changer !!!
 			if (lgup == 3 && tup != 0)
 			{
-				res[0] = tup;
+				res[0] = 1;
 				return res;
 			}
 			if (lgdown == 3 && tdown != 0)
 			{
-				res[0] = tdown;
+				res[0] = 1;
 				return res;
 			}
 		}

@@ -1,7 +1,7 @@
 #include "IA.h"
 using namespace std;
 
-IA::IA(int dim_, int long_win_) : dim(dim_), long_win(long_win_)
+IA::IA(int dim_, int long_win_, int jr_) : dim(dim_), long_win(long_win_), jr(jr_)
 {
 	cout << "Creating AI" << endl;
 }
