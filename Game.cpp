@@ -14,11 +14,20 @@ void Game::idle()
 	switch (ctrl->getStatus())
 	{
 	case 1:
-		if (ctrl->getJ1ordi() != ctrl->getTurnJ2())
+		if (ctrl->getJ1ordi() && !ctrl->getTurnJ2())
 		{
 			cout << endl << endl << "l'ordi joue" << endl;
 			ctrl->print();
-			ctrl->iaTurn(ctrl->getTurnJ2() + 1);
+			ctrl->ia1Turn(ctrl->getTurnJ2() + 1);
+			ctrl->isGameOver();
+			ctrl->changeTurn();
+			ctrl->print();
+		}
+		if (ctrl->getJ2ordi() && ctrl->getTurnJ2())
+		{
+			cout << endl << endl << "l'ordi joue" << endl;
+			ctrl->print();
+			ctrl->ia2Turn(ctrl->getTurnJ2() + 1);
 			ctrl->isGameOver();
 			ctrl->changeTurn();
 			ctrl->print();

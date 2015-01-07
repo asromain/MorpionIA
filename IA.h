@@ -11,13 +11,13 @@ Classe qui controle l'IA
 class IA
 {
 
-private:
+protected:
 
-	int dim;
+	int dim, long_win;
 
 public:
 
-	IA(int dim_);
+	IA(int dim_, int long_win_);
 
 	virtual int* play(int** matrix, int *j);
 };

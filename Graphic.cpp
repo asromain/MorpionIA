@@ -15,7 +15,7 @@ void Graphic::Draw()
 	{
 	case 0:
 		background();
-		menu(ctrl->getCurseur());
+		menu();
 		break;
 	case 1:
 		ctrl->getGr()->draw();
@@ -54,23 +54,73 @@ void Graphic::background()
 	GraphicPrimitives::drawFillPolygone2D(xs, ys, 0.0, 0.0, 0.0);
 }
 
-void Graphic::menu(int c)
+void Graphic::menu()
 {
 	/*
-	Debug
-	GraphicPrimitives::drawFillRect2D(-0.15, -0.02, 0.25, 0.09, 1.0, 1.0, 0.0);
-	GraphicPrimitives::drawFillRect2D(-0.15, -0.52, 0.25, 0.09, 1.0, 1.0, 0.0);*/
-	GraphicPrimitives::drawText2D("SELECT THE AI", -0.2, 0.5, 1.0, 1.0, 1.0);
-	switch (c)
+	Debug*/
+	GraphicPrimitives::drawFillRect2D(-0.64, 0.32, 0.23, 0.09, 1.0, 1.0, 0.0);
+	GraphicPrimitives::drawFillRect2D(-0.02, 0.18, 0.07, 0.09, 1.0, 1.0, 0.0);
+	GraphicPrimitives::drawFillRect2D(0.52, 0.02, 0.23, 0.09, 1.0, 1.0, 0.0);
+	GraphicPrimitives::drawFillRect2D(-0.06, -0.32, 0.15, 0.09, 1.0, 1.0, 0.0);
+
+	GraphicPrimitives::drawText2D("PLAYER 1", -0.63, 0.6, 1.0, 1.0, 1.0);
+	GraphicPrimitives::drawText2D("PLAYER 2", 0.53, 0.6, 1.0, 1.0, 1.0);
+	GraphicPrimitives::drawText2D("SIZE", -0.05, 0.6, 1.0, 1.0, 1.0);
+	GraphicPrimitives::drawText2D("PLAY", -0.05, -0.3, 1.0, 1.0, 1.0);
+	switch (ctrl->getCurseurJ1())
 	{
 	case 0:
-		GraphicPrimitives::drawText2D("PLAYER 1", -0.13, 0.0, 1.0, 0.0, 0.0);
-		GraphicPrimitives::drawText2D("PLAYER 2", -0.13, -0.5, 1.0, 1.0, 1.0);
+		GraphicPrimitives::drawText2D("HUMAN", -0.63, 0.35, 1.0, 0.0, 0.0);
+		GraphicPrimitives::drawText2D("RANDOM", -0.63, 0.2, 1.0, 1.0, 1.0);
+		GraphicPrimitives::drawText2D("MINMAX", -0.63, 0.05, 1.0, 1.0, 1.0);
 		break;
 	case 1:
-		GraphicPrimitives::drawText2D("PLAYER 1", -0.13, 0.0, 1.0, 1.0, 1.0);
-		GraphicPrimitives::drawText2D("PLAYER 2", -0.13, -0.5, 1.0, 0.0, 0.0);
+		GraphicPrimitives::drawText2D("HUMAN", -0.63, 0.35, 1.0, 1.0, 1.0);
+		GraphicPrimitives::drawText2D("RANDOM", -0.63, 0.2, 1.0, 0.0, 0.0);
+		GraphicPrimitives::drawText2D("MINMAX", -0.63, 0.05, 1.0, 1.0, 1.0);
 		break;
+	case 2:
+		GraphicPrimitives::drawText2D("HUMAN", -0.63, 0.35, 1.0, 1.0, 1.0);
+		GraphicPrimitives::drawText2D("RANDOM", -0.63, 0.2, 1.0, 1.0, 1.0);
+		GraphicPrimitives::drawText2D("MINMAX", -0.63, 0.05, 1.0, 0.0, 0.0);
+	default:
+		break;
+	}
+	switch (ctrl->getCurseurJ2())
+	{
+	case 0:
+		GraphicPrimitives::drawText2D("HUMAN", 0.53, 0.35, 1.0, 0.0, 0.0);
+		GraphicPrimitives::drawText2D("RANDOM", 0.53, 0.2, 1.0, 1.0, 1.0);
+		GraphicPrimitives::drawText2D("MINMAX", 0.53, 0.05, 1.0, 1.0, 1.0);
+		break;
+	case 1:
+		GraphicPrimitives::drawText2D("HUMAN", 0.53, 0.35, 1.0, 1.0, 1.0);
+		GraphicPrimitives::drawText2D("RANDOM", 0.53, 0.2, 1.0, 0.0, 0.0);
+		GraphicPrimitives::drawText2D("MINMAX", 0.53, 0.05, 1.0, 1.0, 1.0);
+		break;
+	case 2:
+		GraphicPrimitives::drawText2D("HUMAN", 0.53, 0.35, 1.0, 1.0, 1.0);
+		GraphicPrimitives::drawText2D("RANDOM", 0.53, 0.2, 1.0, 1.0, 1.0);
+		GraphicPrimitives::drawText2D("MINMAX", 0.53, 0.05, 1.0, 0.0, 0.0);
+	default:
+		break;
+	}
+	switch (ctrl->getCurseurT())
+	{
+	case 0:
+		GraphicPrimitives::drawText2D("3", -0.01, 0.35, 1.0, 0.0, 0.0);
+		GraphicPrimitives::drawText2D("5", -0.01, 0.2, 1.0, 1.0, 1.0);
+		GraphicPrimitives::drawText2D("10", -0.01, 0.05, 1.0, 1.0, 1.0);
+		break;
+	case 1:
+		GraphicPrimitives::drawText2D("3", -0.01, 0.35, 1.0, 1.0, 1.0);
+		GraphicPrimitives::drawText2D("5", -0.01, 0.2, 1.0, 0.0, 0.0);
+		GraphicPrimitives::drawText2D("10", -0.01, 0.05, 1.0, 1.0, 1.0);
+		break;
+	case 2:
+		GraphicPrimitives::drawText2D("3", -0.01, 0.35, 1.0, 1.0, 1.0);
+		GraphicPrimitives::drawText2D("5", -0.01, 0.2, 1.0, 1.0, 1.0);
+		GraphicPrimitives::drawText2D("10", -0.01, 0.05, 1.0, 0.0, 0.0);
 	default:
 		break;
 	}
@@ -83,24 +133,10 @@ void Graphic::gameOver()
 		GraphicPrimitives::drawText2D("EGALITE", -0.1, 0.3, 1.0, 1.0, 1.0);
 		break;
 	case 1:
-		if (ctrl->getJ1ordi())
-		{
-			GraphicPrimitives::drawText2D("L'ORDI A GAGNE", -0.15, 0.3, 1.0, 1.0, 1.0);
-		}
-		else
-		{
-			GraphicPrimitives::drawText2D("LE JOUEUR A GAGNE", -0.2, 0.3, 1.0, 1.0, 1.0);
-		}
+		GraphicPrimitives::drawText2D("LE JOUEUR 1", -0.2, 0.3, 1.0, 1.0, 1.0);
 		break;
 	case 2:
-		if (!ctrl->getJ1ordi())
-		{
-			GraphicPrimitives::drawText2D("L'ORDI A GAGNE", -0.15, 0.3, 1.0, 1.0, 1.0);
-		}
-		else
-		{
-			GraphicPrimitives::drawText2D("LE JOUEUR A GAGNE", -0.2, 0.3, 1.0, 1.0, 1.0);
-		}
+		GraphicPrimitives::drawText2D("LE JOUEUR 2", -0.2, 0.3, 1.0, 1.0, 1.0);
 		break;
 	default:
 		break;

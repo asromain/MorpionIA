@@ -36,6 +36,10 @@ bool Controlleur::getJ1ordi()
 {
 	return j1ordi;
 }
+bool Controlleur::getJ2ordi()
+{
+	return j2ordi;
+}
 bool Controlleur::getTurnJ2()
 {
 	return turn;
@@ -48,17 +52,29 @@ void Controlleur::changeTurn()
 {
 	turn = !turn;
 }
-void Controlleur::changeJ1ordi()
+int Controlleur::getCurseurJ1()
 {
-	j1ordi = !j1ordi;
+	return curseurJ1;
 }
-bool Controlleur::getCurseur()
+int Controlleur::getCurseurJ2()
 {
-	return curseur;
+	return curseurJ2;
 }
-void Controlleur::changeCurseur()
+int Controlleur::getCurseurT()
 {
-	curseur = !curseur;
+	return curseurT;
+}
+void Controlleur::setCurseurJ1(int n)
+{
+	curseurJ1 = n;
+}
+void Controlleur::setCurseurJ2(int n)
+{
+	curseurJ2 = n;
+}
+void Controlleur::setCurseurT(int n)
+{
+	curseurT = n;
 }
 int Controlleur::getGagnant()
 {
@@ -68,9 +84,15 @@ void Controlleur::setGagnant(int n)
 {
 	gagnant = n;
 }
-void Controlleur::iaTurn(int j)
+void Controlleur::ia1Turn(int j)
 {
-	int* res = ia->play(gr->getMatrix(), &j);
+	int* res = ia1->play(gr->getMatrix(), &j);
+	gr->actionIA(res[0], res[1], j);
+	delete[] res;
+}
+void Controlleur::ia2Turn(int j)
+{
+	int* res = ia2->play(gr->getMatrix(), &j);
 	gr->actionIA(res[0], res[1], j);
 	delete[] res;
 }
@@ -210,8 +232,7 @@ void Controlleur::print()
 	cout << "status : " << status <<
 		", gagnant : " << gagnant <<
 		", j1ordi : " << j1ordi <<
-		", turn : " << turn <<
-		", curseur : " << curseur << endl;
+		", turn : " << turn << endl;
 	gr->print();
 }
 int Controlleur::getDim()
@@ -222,7 +243,24 @@ int Controlleur::getDim()
 void Controlleur::reset()
 {
 	delete gr;
+	delete ia1;
+	delete ia2;
+	if (curseurT == 0) { dim = 3; long_win = 3; }
+	if (curseurT == 1) { dim = 5; long_win = 4; }
+	if (curseurT == 2) { dim = 10; long_win = 5; }
 	gr = new Grid(dim);
+	if (curseurJ1 != 0)
+	{
+		j1ordi = true;
+		if (curseurJ1 == 1) ia1 = new IA(dim, long_win);
+		if (curseurJ1 == 2) ia1 = new Minmax(dim, long_win);
+	}
+	if (curseurJ2 != 0)
+	{
+		j2ordi = true;
+		if (curseurJ2 == 1) ia2 = new IA(dim, long_win);
+		if (curseurJ2 == 2) ia2 = new Minmax(dim, long_win);
+	}
 	turn = 0;
 	gagnant = 0;
 }
@@ -249,6 +287,7 @@ float Controlleur::pixelToRelativeY(int n)
 // Destructeur
 Controlleur::~Controlleur()
 {
-	delete ia;
+	delete ia1;
+	delete ia2;
 	delete gr;
 }

@@ -23,7 +23,7 @@ private:
 	Controlleur *ctrl;
 
 	void background();
-	void menu(int c);
+	void menu();
 	void gameOver();
 
 public:
