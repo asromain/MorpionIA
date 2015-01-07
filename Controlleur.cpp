@@ -243,6 +243,8 @@ void Controlleur::reset()
 	delete gr;
 	delete ia1;
 	delete ia2;
+	j1ordi = false;
+	j2ordi = false;
 	if (curseurT == 0) { dim = 3; long_win = 3; }
 	if (curseurT == 1) { dim = 5; long_win = 4; }
 	if (curseurT == 2) { dim = 10; long_win = 5; }
