@@ -26,7 +26,7 @@ int Alphabeta::calculMin(int** matrix, int prof, int *j_, int alpha, int beta)
 				{
 					// ici faut jouer le coup
 
-					//  tmp = calculMin(matrix, prof-1, j_, alpha, beta);
+					int tmp = calculMin(matrix, prof-1, j_, alpha, beta);
 
 					// ici faut annuler le coup
 
@@ -61,7 +61,7 @@ int Alphabeta::calculMax(int** matrix, int prof, int *j_, int alpha, int beta)
 				{
 					// ici faut jouer le coup
 
-					//  tmp = calculMax(matrix, prof-1, j_, alpha, beta);
+					int tmp = calculMax(matrix, prof-1, j_, alpha, beta);
 
 					// ici faut annuler le coup
 
