@@ -157,9 +157,9 @@ void Controlleur::isGameOver()
 	// par diagonales
 	for (j = 0; j < dim; j++) 
 	{
+		//diagonale descendante
 		lgup = 0;
 		lgdown = 0;
-		//diagonale descendante
 		tup = gr->getCase(0, j)->getType();
 		tdown = gr->getCase(dim-1, j)->getType();
 		for (int i = 0; j+i < dim; i++) {
@@ -190,7 +190,6 @@ void Controlleur::isGameOver()
 		//diagonale montante
 		lgup = 0;
 		lgdown = 0;
-		//diagonale descendante
 		tup = gr->getCase(0, j)->getType();
 		tdown = gr->getCase(dim-1, j)->getType();
 		for (int i = 0; j - i > 0; i++) {
@@ -214,7 +213,7 @@ void Controlleur::isGameOver()
 			{
 				setStatus(2);
 				gagnant = turn + 1;
-				cout << endl << "===> gagnant par diagonale descendante" << endl << endl;
+				cout << endl << "===> gagnant par diagonale montante" << endl << endl;
 				return;
 			}
 		}

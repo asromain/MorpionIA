@@ -15,7 +15,6 @@ private:
 	float posX, posY;
 	float width, height;
 	float r, g, b;
-	char type;              // pour différencier un pion : random, minimax, alpha beta, humain, pas de pion...
 
 public:
 
