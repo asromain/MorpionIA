@@ -32,8 +32,8 @@ int Minmax::calculMin(int** matrix, int prof, int *j_)
 {
 	int min = INT_MAX;
 	bool pasjoue = true;
-
-	if (prof == 0) return eval(matrix, j_);
+	int* res = eval(matrix, j_);
+	if (prof == 0 || res[0] != 0) return res[1];
 
 	for (int i = 0; i < dim; i++)
 	{
@@ -49,15 +49,15 @@ int Minmax::calculMin(int** matrix, int prof, int *j_)
 			}
 		}
 	}
-	if (pasjoue) return eval(matrix, j_);
+	if (pasjoue) return res[1];
 	return min * prof;
 }
 int Minmax::calculMax(int** matrix, int prof, int *j_)
 {
 	int max = INT_MIN;
 	bool pasjoue = true;
-
-	if (prof == 0) return eval(matrix, j_);
+	int* res = eval(matrix, j_);
+	if (prof == 0 || res[0] != 0) return res[1];
 
 	for (int i = 0; i < dim; i++)
 	{
@@ -73,11 +73,11 @@ int Minmax::calculMax(int** matrix, int prof, int *j_)
 			}
 		}
 	}
-	if (pasjoue) return eval(matrix, j_);
+	if (pasjoue) return res[1];
 	return max * prof;
 }
 
-int Minmax::eval(int** matrix, int *j_)
+int* Minmax::eval(int** matrix, int *j_)
 {
 	//Si le jeu est fini
 	int* jf = jeuFini(matrix, j_);
@@ -86,20 +86,23 @@ int Minmax::eval(int** matrix, int *j_)
 		if (jf[0] == 3)
 		{
 			//Egalite -> on retourne 0
-			return 0;
+			jf[1] = 0;
+			return jf;
 		}
 		//Si l'IA a gagné, on retourne 1000 - le nombre de pions
 		if (jf[0] == *j_)
 		{
-			return 1000;
+			jf[1] = 1000;
+			return jf;
 		}
 		else
 		{
 			//Si l'IA a perdu, on retourne -1000 + le nombre de pions
-			return -1000;
+			jf[1] = -1000;
+			return jf;
 		}
 	}
-	return jf[1];
+	return jf;
 }
 
 int* Minmax::jeuFini(int** matrix, int* j_)

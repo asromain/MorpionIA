@@ -218,7 +218,6 @@ void Controlleur::isGameOver()
 			}
 		}
 	}
-
 	if (egalite)
 	{
 		setStatus(2);
