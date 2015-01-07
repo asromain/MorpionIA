@@ -8,8 +8,7 @@ Pawn::Pawn(float posX_, float posY_, float width_, float height_) :
 	height(height_),
 	r(1.0f),
 	g(0.737f),
-	b(0.251f),
-	type('h')              // joueur : human
+	b(0.251f)
 {}
 
 Pawn::Pawn(float posX_, float posY_, float width_, float height_, float r_, float g_, float b_) :
@@ -19,8 +18,7 @@ Pawn::Pawn(float posX_, float posY_, float width_, float height_, float r_, floa
 	height(height_),
 	r(r_),
 	g(g_),
-	b(b_),
-	type('c')              // intelligence articielle : computer
+	b(b_)
 {}
 
 Pawn::~Pawn() {}

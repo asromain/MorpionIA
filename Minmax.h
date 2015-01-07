@@ -1,12 +1,11 @@
 #pragma once
 #include <cstdlib>
 #include <iostream>
-#include <vector>
 #include "IA.h"
 using namespace std;
 
 /***************************************
-Classe qui controle l'IA
+Algo minimax
 ****************************************/
 
 class Minmax :public IA
@@ -19,6 +18,7 @@ private:
 public:
 
 	Minmax(int dim_);
+	~Minmax();
 
 	virtual int* play(int** matrix, int *j);
 	int calculMin(int** matrix, int prof, int *j_);

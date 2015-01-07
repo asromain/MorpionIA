@@ -2,6 +2,8 @@
 
 Minmax::Minmax(int dim_) : dim(dim_), IA(dim_) {}
 
+Minmax::~Minmax() {}
+
 int* Minmax::play(int** matrix, int *j_)
 {
 	int maxcourant = INT_MIN;
