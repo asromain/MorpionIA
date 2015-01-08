@@ -1,4 +1,5 @@
 #include "Minmax.h"
+using namespace std;
 
 Minmax::Minmax(int dim_, int long_win_, int jr_) : IA(dim_, long_win_, jr_) {}
 
@@ -6,8 +7,10 @@ Minmax::~Minmax() {}
 
 int* Minmax::play(int** matrix, int *j_)
 {
+	cout << "calculating minmax" << endl;
 	int maxcourant = INT_MIN;
 	int* res = new int[2];
+	cout << "choice between : ";
 	for (int i = 0; i < dim; i++)
 	{
 		for (int j = 0; j < dim; j++)
@@ -15,7 +18,8 @@ int* Minmax::play(int** matrix, int *j_)
 			if (matrix[i][j] == 0)
 			{
 				matrix[i][j] = *j_;
-				int max = (calculMax(matrix, 5, autreJoueur(*j_)) * -1);
+				int max = calculMax(matrix, 3, autreJoueur(*j_));
+				cout << max << "  ";
 				if (max > maxcourant)
 				{
 					maxcourant = max;
@@ -26,13 +30,16 @@ int* Minmax::play(int** matrix, int *j_)
 			}
 		}
 	}
+	cout << endl;
+	cout << "choisit : " << maxcourant << endl;
 	return res;
 }
 int Minmax::calculMin(int** matrix, int prof, int j_)
 {
 	int min = INT_MAX;
 	int* res = eval(matrix, j_);
-	if (prof == 0 || res[0] != 0) return (res[1] * -1);
+	if (prof == 0) return (res[1] * prof);
+	if (res[0] != 0) return (res[1] * prof);
 
 	for (int i = 0; i < dim; i++)
 	{
@@ -41,19 +48,20 @@ int Minmax::calculMin(int** matrix, int prof, int j_)
 			if (matrix[i][j] == 0)
 			{
 				matrix[i][j] = j_;
-				int tmp = calculMax(matrix, 5, autreJoueur(j_));
+				int tmp = calculMax(matrix, prof - 1, autreJoueur(j_));
 				if (tmp < min) min = tmp;
 				matrix[i][j] = 0;
 			}
 		}
 	}
-	return (min * prof) * -1;
+	return min;
 }
 int Minmax::calculMax(int** matrix, int prof, int j_)
 {
 	int max = INT_MIN;
 	int* res = eval(matrix, j_);
-	if (prof == 0 || res[0] != 0) return (res[1] * -1);
+	if (prof == 0) return (res[1] * prof);
+	if (res[0] != 0) return (res[1] * prof);
 
 	for (int i = 0; i < dim; i++)
 	{
@@ -62,248 +70,242 @@ int Minmax::calculMax(int** matrix, int prof, int j_)
 			if (matrix[i][j] == 0)
 			{
 				matrix[i][j] = j_;
-				int tmp = calculMin(matrix, 5, autreJoueur(j_));
+				int tmp = calculMin(matrix, prof - 1, autreJoueur(j_));
 				if (tmp > max) max = tmp;
 				matrix[i][j] = 0;
 			}
 		}
 	}
-	return (max * prof) * -1;
+	return max;
 }
 
 int* Minmax::eval(int** matrix, int j_)
 {
-	//Si le jeu est fini
-	int* jf = jeuFini(matrix, j_);
-	if (jf[0] != 0)
-	{
-		if (jf[0] == 2)
-		{
-			//Egalite -> on retourne 0
-			jf[1] = 0;
-			return jf;
-		}
-		//Si l'IA a gagné, on retourne 1000 - le nombre de pions
-		else
-		{
-			if (jr == j_)
-			{
-				jf[1] = 1000;
-				return jf;
-			}
-			else
-			{
-				//Si l'IA a perdu, on retourne -1000 + le nombre de pions
-				jf[1] = -1000;
-				return jf;
-			}
-		}
-	}
-	return jf;
-}
-
-int* Minmax::jeuFini(int** matrix, int j_)
-{
 	bool egalite = true;
-	int i, j;      // indices boucle
-	int t, lg;  // dim-1, type, longueur
-	int lgup, lgdown;
-	int tup, tdown;
-	int* res = new int[2];
-	res[0] = 0;
-	res[1] = 1;
+	int x, y;
+	int score = 0;
+	int* scoreCase = new int[2];
+	int mult;
 
-	// par ligne
-	for (i = 0; i < dim; i++) {
-		t = matrix[i][0];
-		lg = 0;
-		for (j = 0; j < dim; j++) {
-			if (t == matrix[i][j]) {
-				lg++;
-			}
-			else
-			{
-				if (t == j_)
-				{
-					res[1] += (10 + (30 * (lg - 1)));
-				}
-				else if (t != 0)
-				{
-					res[1] += (10 + (30 * (lg - 1))) * -1;
-				}
-				else
-				{}
-				t = matrix[i][j];
-				lg = 1;
-			}
-			if (matrix[i][j] == 0)
+	for (x = 0; x < dim; x++)
+	{
+		for (y = 0; y < dim; y++)
+		{
+			if (matrix[x][y] == 0)
 			{
 				egalite = false;
+				score += 10;
 			}
-			// A changer le 3 en un truc plus général !!!!
-			if (lg == 3 && t != 0)
+			else
 			{
-				res[0] = 1;
-				return res;
+				scoreCase = evalcase(matrix, x, y);
+				if (scoreCase[0] == 1)
+				{
+					return scoreCase;
+				}
+				else
+				{
+					mult = (matrix[x][y] == j_) ? 1 : -1;
+					score += (scoreCase[2] * mult);
+				}
 			}
+
 		}
 	}
 	if (egalite)
 	{
-		res[0] = 2;
-		return res;
+		scoreCase[0] = 2;
+		scoreCase[1] = 0;
+		return scoreCase;
 	}
-	//par colonnes 
-	for (j = 0; j < dim; j++) {
-		t = matrix[0][j];
-		lg = 0;
-		for (i = 0; i < dim; i++) {
-			if (t == matrix[i][j]) {
-				lg++;
+	else
+	{
+		scoreCase[0] = 0;
+		scoreCase[1] = score;
+		return scoreCase;
+	}
+}
+int* Minmax::evalcase(int** matrix, int x, int y)
+{
+	int typecase = matrix[x][y];
+	bool canhr = true, canhl = true, canvu = true, canvd = true, canru = true, canrd = true, canld = true, canlu = true;
+	bool limr = true, liml = true, limu = true, limd = true;
+	bool victh = true, victv = true, victdu = true, victdd = true;
+	int* score = new int[2];
+	score[0] = 0;
+	score[1] = 0;
+	int lh = 1, lv = 1, ldu = 1, ldd = 1;
+	int adversaire = (typecase == 1) + 1;
+	int i;
+
+	for (i = 0; i < long_win; i++)
+	{
+		if (x + i >= dim) limr = false;
+		if (x - i <= 0) liml = false;
+		if (y + i >= dim) limd = false;
+		if (y - i <= 0) limu = false;
+
+		// horizontalement
+		if (canhr && limr)
+		{
+			if (matrix[x + i][y] != adversaire)
+			{
+				if (matrix[x + i][y] == 0) victh = false;
+				lh++;
 			}
 			else
 			{
-				if (t == j_)
-				{
-					res[1] += (10 + (30 * (lg - 1)));
-				}
-				else if (t != 0)
-				{
-					res[1] += (10 + (30 * (lg - 1))) * -1;
-				}
-				else
-				{
-				}
-				t = matrix[i][j];
-				lg = 1;
+				victh = false;
+				canhr = false;
 			}
-			// pareil !!!!
-			if (lg == 3 && t != 0)
+		}
+		if (canhl && liml)
+		{
+			if (matrix[x - i][y] != adversaire)
 			{
-				res[0] = 1;
-				return res;
+				if (matrix[x - i][y] == 0) victh = false;
+				lh++;
 			}
+			else
+			{
+				victh = false;
+				canhl = false;
+			}
+		}
+		if (lh >= long_win)
+		{
+			score[1] += 30;
+		}
+		else
+		{
+			victh = false;
+			score[1] -= 10;
+		}
+		
+
+		//verticalement
+		if (canvd &&  limd)
+		{
+			if (matrix[x][y + i] != adversaire)
+			{
+				if (matrix[x][y + i] == 0) victv = false;
+				lv++;
+			}
+			else
+			{
+				victv = false;
+				canvd = false;
+			}
+		}
+		if (canvu && limu)
+		{
+			if (matrix[x][y - i] != adversaire)
+			{
+				if (matrix[x][y - i] == 0) victv = false;
+				lv++;
+			}
+			else
+			{
+				victv = false;
+				canvu = false;
+			}
+		}
+
+		if (lv >= long_win)
+		{
+			score[1] += 30;
+		}
+		else
+		{
+			victv = false;
+			score[1] -= 10;
+		}
+
+		//diagonale descendante \ 
+		if (limd && limr && canrd)
+		{
+			if (matrix[x + i][y + i] != adversaire)
+			{
+				if (matrix[x + i][y + i] == 0) victdd = false;
+				ldd++;
+			}
+			else
+			{
+				victdd = false;
+				canrd = false;
+			}
+		}
+		if (liml && limu && canlu)
+		{
+			if (matrix[x - i][y - i] != adversaire)
+			{
+				if (matrix[x - i][y - i] == 0) victdd = false;
+				ldd++;
+			}
+			else
+			{
+				victdd = false;
+				canlu = false;
+			}
+		}
+		if (ldd >= long_win)
+		{
+			score[1] += 30;
+		}
+		else
+		{
+			victdd = false;
+			score[1] -= 10;
+		}
+
+		//diagonale montante /
+		if (limu && limr && canru)
+		{
+			if (matrix[x + i][y - i] != adversaire)
+			{
+				if (matrix[x + i][y - i] == 0) victdu = false;
+				ldu++;
+			}
+			else
+			{
+				victdu = false;
+				canru = false;
+			}
+		}
+		if (liml && limd && canld)
+		{
+			if (matrix[x - i][y + i] != adversaire)
+			{
+				if (matrix[x - i][y + i] == 0) victdu = false;
+				ldu++;
+			}
+			else
+			{
+				victdu = false;
+				canld = false;
+			}
+		}
+		if (ldu >= long_win)
+		{
+			score[1] += 30;
+		}
+		else
+		{
+			victdu = false;
+			score[1] -= 10;
 		}
 	}
 
-	// par diagonales
-	for (j = 0; j < dim; j++)
+	if (victdd || victdu || victh || victv)
 	{
-		lgup = 0;
-		lgdown = 0;
-		//diagonale descendante
-		tup = matrix[0][j];
-		tdown = matrix[dim - 1][j];
-		for (int i = 0; j + i < dim; i++) {
-			if (tup == matrix[j + i][i]) {
-				lgup++;
-			}
-			else
-			{
-				if (tup == j_)
-				{
-					res[1] += (10 + (30 * (lgup - 1)));
-				}
-				else if (tup != 0)
-				{
-					res[1] += (10 + (30 * (lgup - 1))) * -1;
-				}
-				else
-				{
-				}
-				tup = matrix[j + i][i];
-				lgup = 1;
-			}
-			if (tdown == matrix[j + i][dim - i - 1]) {
-				lgdown++;
-			}
-			else
-			{
-				if (tdown == j_)
-				{
-					res[1] += (10 + (30 * (lgdown - 1)));
-				}
-				else if (tdown != 0)
-				{
-					res[1] += (10 + (30 * (lgdown - 1))) * -1;
-				}
-				else
-				{
-				}
-				tdown = matrix[j + i][dim - i - 1];
-				lgdown = 1;
-			}
-			// a changer !!!
-			if (lgup == 3 && tup != 0)
-			{
-				res[0] = 1;
-				return res;
-			}
-			if (lgdown == 3 && tdown != 0)
-			{
-				res[0] = 1;
-				return res;
-			}
-		}
-		//diagonale montante
-		lgup = 0;
-		lgdown = 0;
-		//diagonale descendante
-		tup = matrix[0][j];
-		tdown = matrix[dim - 1][j];
-		for (int i = 0; j - i > 0; i++) {
-			if (tup == matrix[j - i][i]) {
-				lgup++;
-			}
-			else
-			{
-				if (tup == j_)
-				{
-					res[1] += (10 + (30 * (lgup - 1)));
-				}
-				else if (tup != 0)
-				{
-					res[1] += (10 + (30 * (lgup - 1))) * -1;
-				}
-				else
-				{
-				}
-				tup = matrix[j - i][i];
-				lgup = 1;
-			}
-			if (tdown == matrix[j - i][dim - i - 1]) {
-				lgdown++;
-			}
-			else
-			{
-				if (tdown == j_)
-				{
-					res[1] += (10 + (30 * (lgdown - 1)));
-				}
-				else if (tdown != 0)
-				{
-					res[1] += (10 + (30 * (lgdown - 1))) * -1;
-				}
-				else
-				{
-				}
-				tdown = matrix[j - i][dim - i - 1];
-				lgdown = 1;
-			}
-			// a changer !!!
-			if (lgup == 3 && tup != 0)
-			{
-				res[0] = 1;
-				return res;
-			}
-			if (lgdown == 3 && tdown != 0)
-			{
-				res[0] = 1;
-				return res;
-			}
-		}
+		score[1] = 1000;
+		score[0] = 1;
+		return score;
 	}
-	return res;
+	else
+	{
+		return score;
+	}
 }
 
 

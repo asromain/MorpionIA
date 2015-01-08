@@ -100,7 +100,7 @@ void Controlleur::isGameOver()
 {
 	bool egalite = true;
 	int i, j;      // indices boucle
-	int d, t, lg;  // dim-1, type, longueur
+	int t, lg;  // dim-1, type, longueur
 	int lgup, lgdown;
 	int tup, tdown;
 
