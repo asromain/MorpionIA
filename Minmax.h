@@ -23,9 +23,6 @@ public:
 	int calculMax(int** matrix, int prof, int j_);
 	int* eval(int** matrix, int j_);
 	int* evalJeu(int** matrix, int j_);
-	int calcScore(int** matrix, int j_);
-	int* jeuFini(int** matrix, int j_);
-	int comptePion(int** matrix);
 	int autreJoueur(int j_);
 
 	~Minmax();

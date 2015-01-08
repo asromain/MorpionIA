@@ -5,47 +5,54 @@ Minmax::Minmax(int dim_, int long_win_, int jr_) : IA(dim_, long_win_, jr_) {}
 
 Minmax::~Minmax() {}
 
+/*
+Début du min max. Fonction apelle par le jeu et est en faite un calcMax
+*/
 int* Minmax::play(int** matrix, int *j_)
 {
 	cout << ">> PLAY: calculating minmax" << endl;
-	int maxcourant = -100000;
-	int* res = new int[2];
+	int maxcourant = -100000; // valeur outrageusement basse pour la comparer avec les autres
+	int* res = new int[2]; // position choisit pour jouer
 	//cout << "choice between : ";
+	//on parcourt la matrice en quête d'un point jouable
 	for (int i = 0; i < dim; i++)
 	{
 		for (int j = 0; j < dim; j++)
 		{
-			if (matrix[i][j] == 0)
+			if (matrix[i][j] == 0) // on peux jouer ici
 			{
-				matrix[i][j] = *j_;
-				int max = calculMin(matrix, 3, *j_);
+				matrix[i][j] = *j_; // on joue
+				int max = calculMin(matrix, 3, *j_); // on evalue le coup et on le compare avec ce qu'on a deja
 				cout << "play max : " << max << "  ";
-				if (max > maxcourant)
+				if (max > maxcourant) // si c'est mieux on le garde
 				{
 					maxcourant = max;
 					res[0] = i;
 					res[1] = j;
 				}
-				matrix[i][j] = 0;
+				matrix[i][j] = 0; // on annule le coup
 			}
 		}
 	}
 	cout << "res[0]=" << res[0] << ", res[1]=" << res[1] << endl;
 	cout << "maxcourant choisit : " << maxcourant << endl;
-	return res;
+	return res; // on retourne la position qui a ete choisi comme la meilleure
 }
-int Minmax::calculMin(int** matrix, int prof, int j_)
+/*
+On evalue la position courante pour l'envoyer au calcMax sinon on cherche la plus petite valeur a garder
+*/
+int Minmax::calculMin(int** matrix, int prof, int j_) 
 {
 	//cout << endl << ">>calculMin, porf : " << prof << endl;
-	int* res = eval(matrix, j_);
-	int st = res[0];
-	int sc = res[1];
+	int* res = eval(matrix, j_); // on evalue le jeu
+	int st = res[0]; // statut du jeu
+	int sc = res[1]; // score du jeu
 	//cout << "res[0]=" << st << ", res[1]=" << sc << endl;
-	delete[] res;
-	if (prof == 0) return (sc * prof);
-	if (st != 0) return (sc * prof);
+	delete[] res; // pas de memorie leak
+	if (prof == 0) return (sc * prof); // si on est dans la profondeur max on ira pas plus loin donc tant pis on retourne le jeu courant
+	if (st != 0) return (sc * prof); // la partie est fini on retourne le score (0 si egalite, 1000 si victoire)
 
-	int min = 100000;
+	int min = 100000; // valeur trop grande pour comparer les resultat
 
 	for (int i = 0; i < dim; i++)
 	{
@@ -53,11 +60,11 @@ int Minmax::calculMin(int** matrix, int prof, int j_)
 		{
 			if (matrix[i][j] == 0)
 			{
-				matrix[i][j] = autreJoueur(j_);
-				int tmp = calculMax(matrix, (prof - 1), autreJoueur(j_));
+				matrix[i][j] = autreJoueur(j_); // c'est a l'autre de jouer
+				int tmp = calculMax(matrix, (prof - 1), autreJoueur(j_)); // et on evalue
 				//cout << "tmp : " << tmp << endl;
 				if (tmp < min) min = tmp;
-				matrix[i][j] = 0;
+				matrix[i][j] = 0; // on ann_ule le coup
 			}
 		}
 	}
@@ -72,7 +79,7 @@ int Minmax::calculMax(int** matrix, int prof, int j_)
 	int sc = res[1];
 	//cout << "res[0]=" << st << ", res[1]=" << sc << endl;
 	delete[] res;
-	if (prof == 0) return ((sc * -1) * prof);
+	if (prof == 0) return ((sc * -1) * prof); // la n fait -1 pcq c'est le score de l'adversaire 
 	if (st != 0) return ((sc * -1) * prof);
 
 	int max = -100000;
@@ -104,18 +111,23 @@ int* Minmax::eval(int** matrix, int j_)
 
 	return res;
 }
+
+/*
+L'idee ici c'est qu'on va avancer sur la ligne et regarder si le joueur peu y faire une ligne gagnante ou si l'adversaire le peu.
+si on peux pas faire de ligne la ligne n'est pas intéressante non plus, même si on y a des pions.
+*/
 int* Minmax::evalJeu(int** matrix, int j_)
 {
-	int longh1 = 0, longh2 = 0, longv1 = 0, longv2 = 0;
-	int score = 0, score1 = 0, score2 = 0;
-	int nbh1 = 0, nbh2 = 0, nbv1 = 0, nbv2 = 0;
-	int valv, valh;
-	int* res = new int[2];
-	res[0] = 0;
-	res[1] = 0;
-	bool egalite = true, victoire = false;
+	int longh1 = 0, longh2 = 0, longv1 = 0, longv2 = 0; // compte la longueur continue de jeu potentiel sur la ligne pour chaque joueur
+	int score = 0, score1 = 0, score2 = 0; // pour le calcul des score
+	int nbh1 = 0, nbh2 = 0, nbv1 = 0, nbv2 = 0; // nombre de pion du joueur dans le calcul des longueur de jeu poteniel
+	int valv, valh; // valeur de point donné de la matrice
+	int* res = new int[2]; // resultat
+	res[0] = 0; // statut du jeux (0 jeu pas fini, 1 victoire du joueur, 2 egalite)
+	res[1] = 0; // score du jeu
+	bool egalite = true, victoire = false; // pour connaitre le staut de la partie
 
-	for (int x = 0; x < dim; x++)
+	for (int x = 0; x < dim; x++) // on parcour en même temps le lignes verticale et horizontale pour gagner un o(n2)
 	{
 		for (int y = 0; y < dim; y++)
 		{
@@ -441,18 +453,6 @@ int* Minmax::evalJeu(int** matrix, int j_)
 	//cout << "fin" << endl;
 	res[1] = score;
 	return res;
-}
-
-
-int Minmax::comptePion(int** matrix)
-{
-	int acc = 0;
-	for (int i = 0; i < dim; i++) {
-		for (int j = 0; j < dim; j++) {
-			acc += (matrix[i][j] != 0);
-		}
-	}
-	return acc;
 }
 int Minmax::autreJoueur(int j_)
 {
