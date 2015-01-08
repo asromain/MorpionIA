@@ -18,7 +18,7 @@ private:
 
 public:
 
-	Alphabeta(int dim_);
+	Alphabeta(int dim_, int long_win_, int jr_);
 	~Alphabeta();
 
 	virtual int* play(int** matrix, int *j);

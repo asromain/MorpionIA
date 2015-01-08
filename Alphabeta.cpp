@@ -1,6 +1,6 @@
 #include "Alphabeta.h"
 
-Alphabeta::Alphabeta(int dim_) : dim(dim_), IA(dim_) {}
+Alphabeta::Alphabeta(int dim_, int long_win_, int jr_) : IA(dim_, long_win_, jr_) {}
 
 Alphabeta::~Alphabeta() {}
 

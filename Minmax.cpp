@@ -7,10 +7,10 @@ Minmax::~Minmax() {}
 
 int* Minmax::play(int** matrix, int *j_)
 {
-	cout << "calculating minmax" << endl;
+	cout << ">> PLAY: calculating minmax" << endl;
 	int maxcourant = INT_MIN;
 	int* res = new int[2];
-	cout << "choice between : ";
+	//cout << "choice between : ";
 	for (int i = 0; i < dim; i++)
 	{
 		for (int j = 0; j < dim; j++)
@@ -19,7 +19,7 @@ int* Minmax::play(int** matrix, int *j_)
 			{
 				matrix[i][j] = *j_;
 				int max = calculMax(matrix, 3, autreJoueur(*j_));
-				cout << max << "  ";
+				cout << "play max : " << max << "  ";
 				if (max > maxcourant)
 				{
 					maxcourant = max;
@@ -30,12 +30,13 @@ int* Minmax::play(int** matrix, int *j_)
 			}
 		}
 	}
-	cout << endl;
-	cout << "choisit : " << maxcourant << endl;
+	cout << "res[0]=" << res[0] << ", res[1]=" << res[1] << endl;
+	cout << "maxcourant choisit : " << maxcourant << endl;
 	return res;
 }
 int Minmax::calculMin(int** matrix, int prof, int j_)
 {
+	cout << endl << ">>calculMin" << endl;
 	int min = INT_MAX;
 	int* res = eval(matrix, j_);
 	if (prof == 0) return (res[1] * prof);
@@ -49,15 +50,18 @@ int Minmax::calculMin(int** matrix, int prof, int j_)
 			{
 				matrix[i][j] = j_;
 				int tmp = calculMax(matrix, prof - 1, autreJoueur(j_));
+				cout << "tmp : " << tmp << endl;
 				if (tmp < min) min = tmp;
 				matrix[i][j] = 0;
 			}
 		}
 	}
+	cout << "min" << min << endl;
 	return min;
 }
 int Minmax::calculMax(int** matrix, int prof, int j_)
 {
+	cout << endl << ">> calculMax" << endl;
 	int max = INT_MIN;
 	int* res = eval(matrix, j_);
 	if (prof == 0) return (res[1] * prof);
@@ -71,11 +75,13 @@ int Minmax::calculMax(int** matrix, int prof, int j_)
 			{
 				matrix[i][j] = j_;
 				int tmp = calculMin(matrix, prof - 1, autreJoueur(j_));
-				if (tmp > max) max = tmp;
+				cout << "tmp : " << tmp << endl;
+ 				if (tmp > max) max = tmp;
 				matrix[i][j] = 0;
 			}
 		}
 	}
+	cout << "max : " << max << endl;
 	return max;
 }
 

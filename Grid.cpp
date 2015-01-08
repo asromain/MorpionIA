@@ -81,7 +81,7 @@ void Grid::action(int idCol, int idLine, int joueur)
 }
 void Grid::actionIA(int x, int y, int joueur)
 {
-	cout << "actioIA, x : " << x << "y : " << y << endl;
+	cout << "actionIA => x : " << x << ", y : " << y << endl;
 	matrix[x][y] = joueur;
 	board[x][y]->setType(joueur);
 }
