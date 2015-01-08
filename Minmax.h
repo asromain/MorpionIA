@@ -21,8 +21,8 @@ public:
 	virtual int* play(int** matrix, int *j);
 	int calculMin(int** matrix, int prof, int j_);
 	int calculMax(int** matrix, int prof, int j_);
-	int* eval(int** matrix, int j_);
-	int* evalJeu(int** matrix, int j_);
+	void eval(int** matrix, int j_, int* st, int* sc);
+	void evalJeu(int** matrix, int j_, int* st, int* sc);
 	int autreJoueur(int j_);
 
 	~Minmax();

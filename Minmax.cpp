@@ -11,7 +11,7 @@ Début du min max. Fonction apelle par le jeu et est en faite un calcMax
 int* Minmax::play(int** matrix, int *j_)
 {
 	cout << ">> PLAY: calculating minmax" << endl;
-	int maxcourant = -100000; // valeur outrageusement basse pour la comparer avec les autres
+	int maxcourant = -1000000; // valeur outrageusement basse pour la comparer avec les autres
 	int* res = new int[2]; // position choisit pour jouer
 	//cout << "choice between : ";
 	//on parcourt la matrice en quête d'un point jouable
@@ -22,9 +22,9 @@ int* Minmax::play(int** matrix, int *j_)
 			if (matrix[i][j] == 0) // on peux jouer ici
 			{
 				matrix[i][j] = *j_; // on joue
-				int max = calculMin(matrix, 3, *j_); // on evalue le coup et on le compare avec ce qu'on a deja
+				int max = calculMin(matrix, 4, *j_); // on evalue le coup et on le compare avec ce qu'on a deja
 				cout << "play max : " << max << "  ";
-				if (max > maxcourant) // si c'est mieux on le garde
+				if ((max > maxcourant) || ((max == maxcourant) && (rand()%2))) // si c'est mieux on le garde
 				{
 					maxcourant = max;
 					res[0] = i;
@@ -44,15 +44,14 @@ On evalue la position courante pour l'envoyer au calcMax sinon on cherche la plu
 int Minmax::calculMin(int** matrix, int prof, int j_) 
 {
 	//cout << endl << ">>calculMin, porf : " << prof << endl;
-	int* res = eval(matrix, j_); // on evalue le jeu
-	int st = res[0]; // statut du jeu
-	int sc = res[1]; // score du jeu
+	int st, sc;
+	eval(matrix, j_, &st, &sc); // on evalue le jeu
 	//cout << "res[0]=" << st << ", res[1]=" << sc << endl;
-	delete[] res; // pas de memorie leak
 	if (prof == 0) return (sc * prof); // si on est dans la profondeur max on ira pas plus loin donc tant pis on retourne le jeu courant
 	if (st != 0) return (sc * prof); // la partie est fini on retourne le score (0 si egalite, 1000 si victoire)
 
-	int min = 100000; // valeur trop grande pour comparer les resultat
+	int min = 1000000; // valeur trop grande pour comparer les resultat
+	vector<int> ress;
 
 	for (int i = 0; i < dim; i++)
 	{
@@ -63,26 +62,33 @@ int Minmax::calculMin(int** matrix, int prof, int j_)
 				matrix[i][j] = autreJoueur(j_); // c'est a l'autre de jouer
 				int tmp = calculMax(matrix, (prof - 1), autreJoueur(j_)); // et on evalue
 				//cout << "tmp : " << tmp << endl;
+				ress.push_back(tmp);
 				if (tmp < min) min = tmp;
-				matrix[i][j] = 0; // on ann_ule le coup
+
+				matrix[i][j] = 0; // on annule le coup
 			}
 		}
 	}
+	cout << "on choisit : " << min << " parmis : ";
+	for each (int n in ress)
+	{
+		cout << n << " ";
+	}
+	cout << endl;
 	//cout << "min" << min << endl;
 	return min;
 }
 int Minmax::calculMax(int** matrix, int prof, int j_)
 {
 	//cout << endl << ">> calculMax, prof : " << prof << endl;
-	int* res = eval(matrix, j_);
-	int st = res[0];
-	int sc = res[1];
+	int st, sc;
+	eval(matrix, j_, &st, &sc);
 	//cout << "res[0]=" << st << ", res[1]=" << sc << endl;
-	delete[] res;
-	if (prof == 0) return ((sc * -1) * prof); // la n fait -1 pcq c'est le score de l'adversaire 
-	if (st != 0) return ((sc * -1) * prof);
+	if (prof == 0) return (sc * prof); // la n fait -1 pcq c'est le score de l'adversaire 
+	if (st != 0) return (sc * prof);
 
-	int max = -100000;
+	int max = -1000000;
+	vector<int> ress;
 
 	for (int i = 0; i < dim; i++)
 	{
@@ -92,40 +98,57 @@ int Minmax::calculMax(int** matrix, int prof, int j_)
 			{
 				matrix[i][j] = autreJoueur(j_);
 				int tmp = calculMin(matrix, (prof - 1), autreJoueur(j_));
+				ress.push_back(max);
 				//cout << "tmp : " << tmp << endl;
  				if (tmp > max) max = tmp;
 				matrix[i][j] = 0;
 			}
 		}
 	}
+	cout << "on choisit : " << max << " parmis : ";
+	for each (int n in ress)
+	{
+		cout << n << " ";
+	}
+	cout << endl;
 	//cout << "max : " << max << endl;
 	return max;
 }
 
-int* Minmax::eval(int** matrix, int j_)
+void Minmax::eval(int** matrix, int j_, int* st, int* sc)
 {
 	int mult = (j_ == jr) ? 1 : -1;
-	int* res = evalJeu(matrix, j_);
+	evalJeu(matrix, j_, st, sc);
 	//cout << "eval donne : res[0]=" << res[0] << ", res[1]=" << res[1] << endl;
-	//res[1] *= mult;
-
-	return res;
+	*sc *= mult;
 }
 
 /*
 L'idee ici c'est qu'on va avancer sur la ligne et regarder si le joueur peu y faire une ligne gagnante ou si l'adversaire le peu.
 si on peux pas faire de ligne la ligne n'est pas intéressante non plus, même si on y a des pions.
 */
-int* Minmax::evalJeu(int** matrix, int j_)
+void Minmax::evalJeu(int** matrix, int j_, int* st, int* sc)
 {
 	int longh1 = 0, longh2 = 0, longv1 = 0, longv2 = 0; // compte la longueur continue de jeu potentiel sur la ligne pour chaque joueur
 	int score = 0, score1 = 0, score2 = 0; // pour le calcul des score
 	int nbh1 = 0, nbh2 = 0, nbv1 = 0, nbv2 = 0; // nombre de pion du joueur dans le calcul des longueur de jeu poteniel
 	int valv, valh; // valeur de point donné de la matrice
-	int* res = new int[2]; // resultat
-	res[0] = 0; // statut du jeux (0 jeu pas fini, 1 victoire du joueur, 2 egalite)
-	res[1] = 0; // score du jeu
 	bool egalite = true, victoire = false; // pour connaitre le staut de la partie
+
+	for (int x = 0; x < dim; x++) // egalite ?
+	{
+		for (int y = 0; y < dim; y++)
+		{
+			if (matrix[x][y] == 0) egalite = false;
+		}
+	}
+	if (egalite)
+	{
+		*st = 2;
+		*sc = 0;
+		//cout << "egalite" << endl;
+		return;
+	}
 
 	for (int x = 0; x < dim; x++) // on parcour en même temps le lignes verticale et horizontale pour gagner un o(n2)
 	{
@@ -143,12 +166,16 @@ int* Minmax::evalJeu(int** matrix, int j_)
 				{
 					if (nbv2 == long_win)
 					{
-						res[0] = 1;
-						res[1] = 1000;
+						*st = 1;
+						*sc = 10000;
 						//cout << "victoire 2" << endl;
-						return res;
+						return;
 					}
-					score2 += (longv2 * 10) + (nbv2 * 2 * 10);
+					score2 += (longv2 * 10) + (nbv2 * 10);
+				}
+				else
+				{
+					score2 -= 10;
 				}
 				nbv2 = 0;
 				longv2 = 0;
@@ -161,19 +188,22 @@ int* Minmax::evalJeu(int** matrix, int j_)
 				{
 					if (nbv1 == long_win)
 					{
-						res[0] = 1;
-						res[1] = 1000;
+						*st = 1;
+						*sc = 10000;
 						//cout << "victoire 1" << endl;
-						return res;
+						return;
 					}
-					score1 += (longv1 * 10) + (nbv1 * 2 * 10);
+					score1 += (longv1 * 10) + (nbv1 * 10);
+				}
+				else
+				{
+					score1 -= 10;
 				}
 				nbv1 = 0;
 				longv1 = 0;
 			}
 			if (valv == 0)
 			{
-				egalite = false;
 				longv1++;
 				longv2++;
 			}
@@ -188,12 +218,16 @@ int* Minmax::evalJeu(int** matrix, int j_)
 				{
 					if (nbh2 == long_win)
 					{
-						res[0] = 1;
-						res[1] = 1000;
+						*st = 1;
+						*sc = 10000;
 						//cout << "victoire 2" << endl;
-						return res;
+						return;
 					}
-					score2 += (longh2 * 10) + (nbh2 * 2 * 10);
+					score2 += (longh2 * 10) + (nbh2 * 10);
+				}
+				else
+				{
+					score2 -= 10;
 				}
 				nbh2 = 0;
 				longh2 = 0;
@@ -206,19 +240,22 @@ int* Minmax::evalJeu(int** matrix, int j_)
 				{
 					if (nbh1 == long_win)
 					{
-						res[0] = 1;
-						res[1] = 1000;
+						*st = 1;
+						*sc = 10000;
 						//cout << "victoire 1" << endl;
-						return res;
+						return;
 					}
-					score1 += (longh1 * 10) + (nbh1 * 2 * 10);
+					score1 += (longh1 * 10) + (nbh1 * 10);
+				}
+				else
+				{
+					score1 -= 10;
 				}
 				nbh1 = 0;
 				longh1 = 0;
 			}
 			if (valh == 0)
 			{
-				egalite = false;
 				longh1++;
 				longh2++;
 			}
@@ -227,45 +264,61 @@ int* Minmax::evalJeu(int** matrix, int j_)
 		{
 			if (nbh2 == long_win)
 			{
-				res[0] = 1;
-				res[1] = 1000;
+				*st = 1;
+				*sc = 10000;
 				//cout << "victoire 2" << endl;
-				return res;
+				return;
 			}
-			score2 += (longh2 * 10) + (nbh2 * 2 * 10);
+			score2 += (longh2 * 10) + (nbh2 * 10);
+		}
+		else
+		{
+			score2 -= 10;
 		}
 		if (longh1 >= long_win)
 		{
 			if (nbh1 == long_win)
 			{
-				res[0] = 1;
-				res[1] = 1000;
+				*st = 1;
+				*sc = 10000;
 				//cout << "victoire 1" << endl;
-				return res;
+				return;
 			}
-			score1 += (longh1 * 10) + (nbh1 * 2 * 10);
+			score1 += (longh1 * 10) + (nbh1 * 10);
+		}
+		else
+		{
+			score1 -= 10;
 		}
 		if (longv2 >= long_win)
 		{
 			if (nbv2 == long_win)
 			{
-				res[0] = 1;
-				res[1] = 1000;
+				*st = 1;
+				*sc = 10000;
 				//cout << "victoire 2" << endl;
-				return res;
+				return;
 			}
-			score2 += (longv2 * 10) + (nbv2 * 2 * 10);
+			score2 += (longv2 * 10) + (nbv2 * 10);
+		}
+		else
+		{
+			score2 -= 10;
 		}
 		if (longv1 >= long_win)
 		{
 			if (nbv1 == long_win)
 			{
-				res[0] = 1;
-				res[1] = 1000;
+				*st = 1;
+				*sc = 10000;
 				//cout << "victoire 1" << endl;
-				return res;
+				return;
 			}
-			score1 += (longv1 * 10) + (nbv1 * 2 * 10);
+			score1 += (longv1 * 10) + (nbv1 * 10);
+		}
+		else
+		{
+			score1 -= 10;
 		}
 		nbv1 = 0;
 		longv1 = 0;
@@ -282,13 +335,6 @@ int* Minmax::evalJeu(int** matrix, int j_)
 		longh1 = 0, longh2 = 0, longv1 = 0, longv2 = 0;
 		score1 = 0, score2 = 0;
 		nbh1 = 0, nbh2 = 0, nbv1 = 0, nbv2 = 0;
-	}
-	if (egalite)
-	{
-		res[0] = 2;
-		res[1] = 0;
-		//cout << "egalite" << endl;
-		return res;
 	}
 
 	for (int x = 0; x + long_win <= dim; x++)
@@ -308,12 +354,16 @@ int* Minmax::evalJeu(int** matrix, int j_)
 					{
 						if (nbh2 == long_win)
 						{
-							res[0] = 1;
-							res[1] = 1000;
+							*st = 1;
+							*sc = 10000;
 							//cout << "victoire 2" << endl;
-							return res;
+							return;
 						}
-						score2 += (longh2 * 10) + (nbh2 * 2 * 10);
+						score2 += (longh2 * 10) + (nbh2 * 10);
+					}
+					else
+					{
+						score2 -= 10;
 					}
 					nbh2 = 0;
 					longh2 = 0;
@@ -326,12 +376,16 @@ int* Minmax::evalJeu(int** matrix, int j_)
 					{
 						if (nbh1 == long_win)
 						{
-							res[0] = 1;
-							res[1] = 1000;
+							*st = 1;
+							*sc = 10000;
 							//cout << "victoire 1" << endl;
-							return res;
+							return;
 						}
-						score1 += (longh1 * 10) + (nbh1 * 2 * 10);
+						score1 += (longh1 * 10) + (nbh1 * 10);
+					}
+					else
+					{
+						score1 -= 10;
 					}
 					nbh1 = 0;
 					longh1 = 0;
@@ -343,10 +397,10 @@ int* Minmax::evalJeu(int** matrix, int j_)
 				}
 			}
 
-			if (x - y >= 0)
+			if ((dim - 1 - x) - y >= 0)
 			{
 				//montante
-				valv = matrix[x - y][y];
+				valv = matrix[(dim - 1 - x) - y][y];
 				if (valv == 1)
 				{
 					nbv1++;
@@ -355,12 +409,16 @@ int* Minmax::evalJeu(int** matrix, int j_)
 					{
 						if (nbv2 == long_win)
 						{
-							res[0] = 1;
-							res[1] = 1000;
+							*st = 1;
+							*sc = 10000;
 							//cout << "victoire 2" << endl;
-							return res;
+							return;
 						}
-						score2 += (longv2 * 10) + (nbv2 * 2 * 10);
+						score2 += (longv2 * 10) + (nbv2 * 10);
+					}
+					else
+					{
+						score2 -= 10;
 					}
 					nbv2 = 0;
 					longv2 = 0;
@@ -373,12 +431,16 @@ int* Minmax::evalJeu(int** matrix, int j_)
 					{
 						if (nbv1 == long_win)
 						{
-							res[0] = 1;
-							res[1] = 1000;
+							*st = 1;
+							*sc = 10000;
 							//cout << "victoire 1" << endl;
-							return res;
+							return;
 						}
-						score1 += (longv1 * 10) + (nbv1 * 2 * 10);
+						score1 += (longv1 * 10) + (nbv1 * 10);
+					}
+					else
+					{
+						score1 -= 10;
 					}
 					nbv1 = 0;
 					longv1 = 0;
@@ -394,45 +456,61 @@ int* Minmax::evalJeu(int** matrix, int j_)
 		{
 			if (nbh2 == long_win)
 			{
-				res[0] = 1;
-				res[1] = 1000;
+				*st = 1;
+				*sc = 10000;
 				//cout << "victoire 2" << endl;
-				return res;
+				return;
 			}
-			score2 += (longh2 * 10) + (nbh2 * 2 * 10);
+			score2 += (longh2 * 10) + (nbh2 * 10);
+		}
+		else
+		{
+			score2 -= 10;
 		}
 		if (longh1 >= long_win)
 		{
 			if (nbh1 == long_win)
 			{
-				res[0] = 1;
-				res[1] = 1000;
+				*st = 1;
+				*sc = 10000;
 				//cout << "victoire 1" << endl;
-				return res;
+				return;
 			}
-			score1 += (longh1 * 10) + (nbh1 * 2 * 10);
+			score1 += (longh1 * 10) + (nbh1 * 10);
+		}
+		else
+		{
+			score1 -= 10;
 		}
 		if (longv2 >= long_win)
 		{
 			if (nbv2 == long_win)
 			{
-				res[0] = 1;
-				res[1] = 1000;
+				*st = 1;
+				*sc = 10000;
 				//cout << "victoire 2" << endl;
-				return res;
+				return;
 			}
-			score2 += (longv2 * 10) + (nbv2 * 2 * 10);
+			score2 += (longv2 * 10) + (nbv2 * 10);
+		}
+		else
+		{
+			score2 -= 10;
 		}
 		if (longv1 >= long_win)
 		{
 			if (nbv1 == long_win)
 			{
-				res[0] = 1;
-				res[1] = 1000;
+				*st = 1;
+				*sc = 10000;
 				//cout << "victoire 1" << endl;
-				return res;
+				return;
 			}
-			score1 += (longv1 * 10) + (nbv1 * 2 * 10);
+			score1 += (longv1 * 10) + (nbv1 * 10);
+		}
+		else
+		{
+			score1 -= 10;
 		}
 		if (j_ == 1)
 		{
@@ -451,8 +529,8 @@ int* Minmax::evalJeu(int** matrix, int j_)
 
 
 	//cout << "fin" << endl;
-	res[1] = score;
-	return res;
+	*sc = score;
+	return;
 }
 int Minmax::autreJoueur(int j_)
 {
