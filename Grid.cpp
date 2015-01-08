@@ -45,12 +45,12 @@ void Grid::draw()
 }
 
 //Récupération de la case cliquée
-Case * Grid::getCase(float fx, float fy)
+Case * Grid::getCase(float fy, float fx)
 {
-	int idLine = (int)((fy + 1) / caseHeight);    // récupération de l'indice de la ligne
-	int idCol = (int)((fx + 1)/ caseWidth);       // récupération de l'indice de la colonne
+	int idCol = (int)((fx + 1) / caseHeight);    // récupération de l'indice de la ligne
+	int idLine = (int)((fy + 1)/ caseWidth);       // récupération de l'indice de la colonne
 
-	return board[idLine][idCol];
+	return board[idCol][idLine];
 }
 
 int Grid::getLine(float coordX_, float coordY_, int ww_, int wh_) {
