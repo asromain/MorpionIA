@@ -93,43 +93,327 @@ int Minmax::calculMax(int** matrix, int prof, int j_)
 
 int* Minmax::eval(int** matrix, int j_)
 {
+	int mult = (j_ == jr) ? 1 : -1;
+	int* res = evalJeu(matrix, j_);
+
+	res[1] *= mult;
+
+	return res;
+}
+int* Minmax::evalJeu(int** matrix, int j_)
+{
 	int longh1, longh2, longv1, longv2;
-	int score1, score2;
+	int score, score1, score2;
+	int nbh1, nbh2, nbv1, nbv2;
 	int* res = new int[2];
+	bool egalite = true, victoire = false;
+
 	for (int x = 0; x < dim; x++)
 	{
 		for (int y = 0; y < dim; y++)
 		{
-
+			//verticale
 			switch (matrix[x][y])
 			{
-			case 0:
-				break;
 			case 1:
+				nbh1++;
+				longh1++;
+				if (longh2 >= long_win)
+				{
+					if (nbh2 == long_win)
+					{
+						res[0] = 1;
+						res[1] = 1000;
+						return res;
+					}
+					score2 += (longh2 * 10) + (nbh2 * 2 * 10);
+				}
+				nbh2 = 0;
+				longh2 = 0;
 				break;
 			case 2:
+				nbh2++;
+				longh2++;
+				if (longh1 >= long_win)
+				{
+					if (nbh1 == long_win)
+					{
+						res[0] = 1;
+						res[1] = 1000;
+						return res;
+					}
+					score1 += (longh1 * 10) + (nbh1 * 2 * 10);
+				}
+				nbh1 = 0;
+				longh1 = 0;
 				break;
 			default:
+				egalite = false;
+				longh1++;
+				longh2++;
 				break;
 			}
+
+			//horizontale
 			switch (matrix[y][x])
 			{
-			case 0:
-				break;
 			case 1:
+				nbv1++;
+				longv1++;
+				if (longv2 >= long_win)
+				{
+					if (nbv2 == long_win)
+					{
+						res[0] = 1;
+						res[1] = 1000;
+						return res;
+					}
+					score2 += (longv2 * 10) + (nbv2 * 2 * 10);
+				}
+				nbv2 = 0;
+				longv2 = 0;
 				break;
 			case 2:
+				nbv2++;
+				longv2++;
+				if (longv1 >= long_win)
+				{
+					if (nbv1 == long_win)
+					{
+						res[0] = 1;
+						res[1] = 1000;
+						return res;
+					}
+					score1 += (longv1 * 10) + (nbv1 * 2 * 10);
+				}
+				nbv1 = 0;
+				longv1 = 0;
 				break;
 			default:
+				egalite = false;
+				longv1++;
+				longv2++;
 				break;
 			}
 		}
+		if (longh2 >= long_win)
+		{
+			if (nbh2 == long_win)
+			{
+				res[0] = 1;
+				res[1] = 1000;
+				return res;
+			}
+			score2 += (longh2 * 10) + (nbh2 * 2 * 10);
+		}
+		nbh2 = 0;
+		longh2 = 0;
+		if (longh1 >= long_win)
+		{
+			if (nbh1 == long_win)
+			{
+				res[0] = 1;
+				res[1] = 1000;
+				return res;
+			}
+			score1 += (longh1 * 10) + (nbh1 * 2 * 10);
+		}
+		nbh1 = 0;
+		longh1 = 0;
+		if (longv2 >= long_win)
+		{
+			if (nbv2 == long_win)
+			{
+				res[0] = 1;
+				res[1] = 1000;
+				return res;
+			}
+			score2 += (longv2 * 10) + (nbv2 * 2 * 10);
+		}
+		nbv2 = 0;
+		longv2 = 0;
+		if (longv1 >= long_win)
+		{
+			if (nbv1 == long_win)
+			{
+				res[0] = 1;
+				res[1] = 1000;
+				return res;
+			}
+			score1 += (longv1 * 10) + (nbv1 * 2 * 10);
+		}
+		nbv1 = 0;
+		longv1 = 0;
+		if (j_ == 1)
+		{
+			score += score1;
+			score -= score2;
+		}
+		else
+		{
+			score -= score1;
+			score += score2;
+		}
 	}
-	return res;
-}
-int* Minmax::evalcase(int** matrix, int x, int y)
-{
-	int* res;
+	if (egalite)
+	{
+		res[0] = 2;
+		res[1] = 0;
+		return res;
+	}
+
+	for (int x = 0; x + long_win <= dim; x++)
+	{
+		for (int y = 0; y < dim; y++)
+		{
+			if (x + y < dim)
+			{
+				//descendante
+				switch (matrix[x + y][y])
+				{
+				case 1:
+					nbh1++;
+					longh1++;
+					if (longh2 >= long_win)
+					{
+						if (nbh2 == long_win)
+						{
+							res[0] = 1;
+							res[1] = 1000;
+							return res;
+						}
+						score2 += (longh2 * 10) + (nbh2 * 2 * 10);
+					}
+					nbh2 = 0;
+					longh2 = 0;
+					break;
+				case 2:
+					nbh2++;
+					longh2++;
+					if (longh1 >= long_win)
+					{
+						if (nbh1 == long_win)
+						{
+							res[0] = 1;
+							res[1] = 1000;
+							return res;
+						}
+						score1 += (longh1 * 10) + (nbh1 * 2 * 10);
+					}
+					nbh1 = 0;
+					longh1 = 0;
+					break;
+				default:
+					longh1++;
+					longh2++;
+					break;
+				}
+			}
+
+			if (x - y >= 0)
+			{
+				//montante
+				switch (matrix[x - y][y])
+				{
+				case 1:
+					nbv1++;
+					longv1++;
+					if (longv2 >= long_win)
+					{
+						if (nbv2 == long_win)
+						{
+							res[0] = 1;
+							res[1] = 1000;
+							return res;
+						}
+						score2 += (longv2 * 10) + (nbv2 * 2 * 10);
+					}
+					nbv2 = 0;
+					longv2 = 0;
+					break;
+				case 2:
+					nbv2++;
+					longv2++;
+					if (longv1 >= long_win)
+					{
+						if (nbv1 == long_win)
+						{
+							res[0] = 1;
+							res[1] = 1000;
+							return res;
+						}
+						score1 += (longv1 * 10) + (nbv1 * 2 * 10);
+					}
+					nbv1 = 0;
+					longv1 = 0;
+					break;
+				default:
+					longv1++;
+					longv2++;
+					break;
+				}
+			}
+		}
+		if (longh2 >= long_win)
+		{
+			if (nbh2 == long_win)
+			{
+				res[0] = 1;
+				res[1] = 1000;
+				return res;
+			}
+			score2 += (longh2 * 10) + (nbh2 * 2 * 10);
+		}
+		nbh2 = 0;
+		longh2 = 0;
+		if (longh1 >= long_win)
+		{
+			if (nbh1 == long_win)
+			{
+				res[0] = 1;
+				res[1] = 1000;
+				return res;
+			}
+			score1 += (longh1 * 10) + (nbh1 * 2 * 10);
+		}
+		nbh1 = 0;
+		longh1 = 0;
+		if (longv2 >= long_win)
+		{
+			if (nbv2 == long_win)
+			{
+				res[0] = 1;
+				res[1] = 1000;
+				return res;
+			}
+			score2 += (longv2 * 10) + (nbv2 * 2 * 10);
+		}
+		nbv2 = 0;
+		longv2 = 0;
+		if (longv1 >= long_win)
+		{
+			if (nbv1 == long_win)
+			{
+				res[0] = 1;
+				res[1] = 1000;
+				return res;
+			}
+			score1 += (longv1 * 10) + (nbv1 * 2 * 10);
+		}
+		nbv1 = 0;
+		longv1 = 0;
+		if (j_ == 1)
+		{
+			score += score1;
+			score -= score2;
+		}
+		else
+		{
+			score -= score1;
+			score += score2;
+		}
+	}
+
 	return res;
 }
 
