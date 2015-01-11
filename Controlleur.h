@@ -17,7 +17,7 @@ class Controlleur
 
 private:
 
-	int dim = 3, long_win = 3;
+	int dim = 3, long_win = 3, prof = 8;
 	IA* ia1;
 	IA* ia2;
 	Grid * gr;

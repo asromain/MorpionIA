@@ -171,12 +171,12 @@ void Controlleur::isGameOver()
 				tup = gr->getCase(j+i, i)->getType();
 				lgup = 1;
 			}
-			if (tdown == gr->getCase(j+i, dim - i-1)->getType()) {
+			if (tdown == gr->getCase((dim - 1) - j - i, dim - i - 1)->getType()) {
 				lgdown++;
 			}
 			else
 			{
-				tdown = gr->getCase(j + i, dim - i-1)->getType();
+				tdown = gr->getCase((dim - 1) - j - i, dim - i - 1)->getType();
 				lgdown = 1;
 			}
 			if ((lgup == long_win && tup != 0) || (lgdown == long_win && tdown != 0))
@@ -193,7 +193,7 @@ void Controlleur::isGameOver()
 		tup = gr->getCase(0, j)->getType();
 		tdown = gr->getCase(dim-1, j)->getType();
 		for (int i = 0; j - i > 0; i++) {
-			if (tup == gr->getCase(j-i, i)->getType()) {
+			if (tup == gr->getCase(j - i, i)->getType()) {
 				lgup++;
 			}
 			else
@@ -201,12 +201,12 @@ void Controlleur::isGameOver()
 				tup = gr->getCase(j - i, i)->getType();
 				lgup = 1;
 			}
-			if (tdown == gr->getCase(j - i, dim - i-1)->getType()) {
+			if (tdown == gr->getCase((dim - 1) - j + i, dim - i - 1)->getType()) {
 				lgdown++;
 			}
 			else
 			{
-				tdown = gr->getCase(j - i, dim - i-1)->getType();
+				tdown = gr->getCase((dim - 1) - j + i, dim - i - 1)->getType();
 				lgdown = 1;
 			}
 			if ((lgup == long_win && tup !=0) || (lgdown == long_win && tdown != 0))
@@ -245,21 +245,21 @@ void Controlleur::reset()
 	delete ia2;
 	j1ordi = false;
 	j2ordi = false;
-	if (curseurT == 0) { dim = 3; long_win = 3; }
-	if (curseurT == 1) { dim = 5; long_win = 4; }
-	if (curseurT == 2) { dim = 10; long_win = 5; }
+	if (curseurT == 0) { dim = 3; long_win = 3; prof = 8; }
+	if (curseurT == 1) { dim = 5; long_win = 4; prof = 4; }
+	if (curseurT == 2) { dim = 10; long_win = 5; prof = 2; }
 	gr = new Grid(dim);
 	if (curseurJ1 != 0)
 	{
 		j1ordi = true;
 		if (curseurJ1 == 1) ia1 = new IA(dim, long_win, 1);
-		if (curseurJ1 == 2) ia1 = new Minmax(dim, long_win, 1);
+		if (curseurJ1 == 2) ia1 = new Minmax(dim, long_win, prof, 1);
 	}
 	if (curseurJ2 != 0)
 	{
 		j2ordi = true;
 		if (curseurJ2 == 1) ia2 = new IA(dim, long_win, 2);
-		if (curseurJ2 == 2) ia2 = new Minmax(dim, long_win, 2);
+		if (curseurJ2 == 2) ia2 = new Minmax(dim, long_win, prof, 2);
 	}
 	turn = 0;
 	gagnant = 0;
