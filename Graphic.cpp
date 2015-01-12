@@ -57,11 +57,11 @@ void Graphic::background()
 void Graphic::menu()
 {
 	/*
-	Debug*/
+	Debug
 	GraphicPrimitives::drawFillRect2D(-0.64, 0.32, 0.23, 0.09, 1.0, 1.0, 0.0);
 	GraphicPrimitives::drawFillRect2D(-0.02, 0.18, 0.07, 0.09, 1.0, 1.0, 0.0);
 	GraphicPrimitives::drawFillRect2D(0.52, 0.02, 0.23, 0.09, 1.0, 1.0, 0.0);
-	GraphicPrimitives::drawFillRect2D(-0.06, -0.32, 0.15, 0.09, 1.0, 1.0, 0.0);
+	GraphicPrimitives::drawFillRect2D(-0.06, -0.32, 0.15, 0.09, 1.0, 1.0, 0.0);*/
 
 	GraphicPrimitives::drawText2D("PLAYER 1", -0.63, 0.6, 1.0, 1.0, 1.0);
 	GraphicPrimitives::drawText2D("PLAYER 2", 0.53, 0.6, 1.0, 1.0, 1.0);
@@ -73,16 +73,24 @@ void Graphic::menu()
 		GraphicPrimitives::drawText2D("HUMAN", -0.63, 0.35, 1.0, 0.0, 0.0);
 		GraphicPrimitives::drawText2D("RANDOM", -0.63, 0.2, 1.0, 1.0, 1.0);
 		GraphicPrimitives::drawText2D("MINMAX", -0.63, 0.05, 1.0, 1.0, 1.0);
+		GraphicPrimitives::drawText2D("ALPHA", -0.63, -0.1, 1.0, 1.0, 1.0);
 		break;
 	case 1:
 		GraphicPrimitives::drawText2D("HUMAN", -0.63, 0.35, 1.0, 1.0, 1.0);
 		GraphicPrimitives::drawText2D("RANDOM", -0.63, 0.2, 1.0, 0.0, 0.0);
 		GraphicPrimitives::drawText2D("MINMAX", -0.63, 0.05, 1.0, 1.0, 1.0);
+		GraphicPrimitives::drawText2D("ALPHA", -0.63, -0.1, 1.0, 1.0, 1.0);
 		break;
 	case 2:
 		GraphicPrimitives::drawText2D("HUMAN", -0.63, 0.35, 1.0, 1.0, 1.0);
 		GraphicPrimitives::drawText2D("RANDOM", -0.63, 0.2, 1.0, 1.0, 1.0);
 		GraphicPrimitives::drawText2D("MINMAX", -0.63, 0.05, 1.0, 0.0, 0.0);
+		GraphicPrimitives::drawText2D("ALPHA", -0.63, -0.1, 1.0, 1.0, 1.0);
+	case 3:
+		GraphicPrimitives::drawText2D("HUMAN", -0.63, 0.35, 1.0, 1.0, 1.0);
+		GraphicPrimitives::drawText2D("RANDOM", -0.63, 0.2, 1.0, 1.0, 1.0);
+		GraphicPrimitives::drawText2D("MINMAX", -0.63, 0.05, 1.0, 1.0, 1.0);
+		GraphicPrimitives::drawText2D("ALPHA", -0.63, -0.1, 1.0, 0.0, 0.0);
 	default:
 		break;
 	}
@@ -92,16 +100,24 @@ void Graphic::menu()
 		GraphicPrimitives::drawText2D("HUMAN", 0.53, 0.35, 1.0, 0.0, 0.0);
 		GraphicPrimitives::drawText2D("RANDOM", 0.53, 0.2, 1.0, 1.0, 1.0);
 		GraphicPrimitives::drawText2D("MINMAX", 0.53, 0.05, 1.0, 1.0, 1.0);
+		GraphicPrimitives::drawText2D("ALPHA", 0.53, -0.1, 1.0, 1.0, 1.0);
 		break;
 	case 1:
 		GraphicPrimitives::drawText2D("HUMAN", 0.53, 0.35, 1.0, 1.0, 1.0);
 		GraphicPrimitives::drawText2D("RANDOM", 0.53, 0.2, 1.0, 0.0, 0.0);
 		GraphicPrimitives::drawText2D("MINMAX", 0.53, 0.05, 1.0, 1.0, 1.0);
+		GraphicPrimitives::drawText2D("ALPHA", 0.53, -0.1, 1.0, 1.0, 1.0);
 		break;
 	case 2:
 		GraphicPrimitives::drawText2D("HUMAN", 0.53, 0.35, 1.0, 1.0, 1.0);
 		GraphicPrimitives::drawText2D("RANDOM", 0.53, 0.2, 1.0, 1.0, 1.0);
 		GraphicPrimitives::drawText2D("MINMAX", 0.53, 0.05, 1.0, 0.0, 0.0);
+		GraphicPrimitives::drawText2D("ALPHA", 0.53, -0.1, 1.0, 1.0, 1.0);
+	case 3:
+		GraphicPrimitives::drawText2D("HUMAN", 0.53, 0.35, 1.0, 1.0, 1.0);
+		GraphicPrimitives::drawText2D("RANDOM", 0.53, 0.2, 1.0, 1.0, 1.0);
+		GraphicPrimitives::drawText2D("MINMAX", 0.53, 0.05, 1.0, 1.0, 1.0);
+		GraphicPrimitives::drawText2D("ALPHA", 0.53, -0.1, 1.0, 0.0, 0.0);
 	default:
 		break;
 	}

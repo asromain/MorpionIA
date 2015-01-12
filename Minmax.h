@@ -12,7 +12,7 @@ Classe qui controle l'IA
 class Minmax :public IA
 {
 
-private:
+protected:
 
 	int profondeur;
 
@@ -23,11 +23,11 @@ public:
 	virtual int* play(int** matrix, int *j);
 	int calculMin(int** matrix, int prof, int j_);
 	int calculMax(int** matrix, int prof, int j_);
-	void eval(int** matrix, int j_, int* st, int* sc);
-	void evalJeu(int** matrix, int j_, int* st, int* sc);
-	int autreJoueur(int j_);
-	bool victoire(int** matrix);
-	bool nul(int** matrix);
+	virtual void eval(int** matrix, int j_, int* st, int* sc);
+	virtual void evalJeu(int** matrix, int j_, int* st, int* sc);
+	virtual int autreJoueur(int j_);
+	virtual bool victoire(int** matrix);
+	virtual bool nul(int** matrix);
 
 	~Minmax();
 };

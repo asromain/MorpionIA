@@ -65,6 +65,7 @@ void Control::MouseCallback(int button, int state, int x, int y)
 			if (-0.64 < fx && fx < -0.41 && 0.32 < fy && fy < 0.41) ctrl->setCurseurJ1(0);
 			if (-0.64 < fx && fx < -0.41 && 0.18 < fy && fy < 0.27) ctrl->setCurseurJ1(1);
 			if (-0.64 < fx && fx < -0.41 && 0.02 < fy && fy < 0.11) ctrl->setCurseurJ1(2);
+			if (-0.64 < fx && fx < -0.41 && -0.13 < fy && fy < -0.06) ctrl->setCurseurJ1(3);
 
 			if (-0.02 < fx && fx < 0.05 && 0.32 < fy && fy < 0.41) ctrl->setCurseurT(0);
 			if (-0.02 < fx && fx < 0.05 && 0.18 < fy && fy < 0.27) ctrl->setCurseurT(1);
@@ -73,6 +74,7 @@ void Control::MouseCallback(int button, int state, int x, int y)
 			if (0.52 < fx && fx < 0.75 && 0.32 < fy && fy < 0.41) ctrl->setCurseurJ2(0);
 			if (0.52 < fx && fx < 0.75 && 0.18 < fy && fy < 0.27) ctrl->setCurseurJ2(1);
 			if (0.52 < fx && fx < 0.75 && 0.02 < fy && fy < 0.11) ctrl->setCurseurJ2(2);
+			if (0.52 < fx && fx < 0.75 && -0.13 < fy && fy < -0.06) ctrl->setCurseurJ2(3);
 
 			if (-0.06 < fx && fx < 0.09 && -0.32 < fy && fy < -0.25)
 			{

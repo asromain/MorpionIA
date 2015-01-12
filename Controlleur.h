@@ -2,6 +2,7 @@
 #include "Grid.h"
 #include "IA.h"
 #include "Minmax.h"
+#include "Alphabeta.h"
 using namespace std;
 
 #define WWIDTH 800
