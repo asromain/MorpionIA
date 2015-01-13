@@ -331,27 +331,27 @@ void Minmax::evalJeu(int** matrix, int j_, int* st, int* sc)
 			}
 			if (x != 0)
 			{
-				valh = matrix[x + y][(dim - 1) - y];
-				if (valh == 1)
+				valv = matrix[x + y][(dim - 1) - y];
+				if (valv == 1)
 				{
-					nbh1d++;
-					longh1d++;
-					if (longh2d >= long_win) score2 += (longh2d * 10) + (nbh2d * 10);
-					nbh2d = 0;
-					longh2d = 0;
+					nbv1d++;
+					longv1d++;
+					if (longv2d >= long_win) score2 += (longv2d * 10) + (nbv2d * 10);
+					nbv2d = 0;
+					longv2d = 0;
 				}
-				if (valh == 2)
+				if (valv == 2)
 				{
-					nbh2d++;
-					longh2d++;
-					if (longh1d >= long_win) score1 += (longh1d * 10) + (nbh1d * 10);
-					nbh1d = 0;
-					longh1d = 0;
+					nbv2d++;
+					longv2d++;
+					if (longv1d >= long_win) score1 += (longv1d * 10) + (nbv1d * 10);
+					nbv1d = 0;
+					longv1d = 0;
 				}
-				if (valh == 0)
+				if (valv == 0)
 				{
-					longh1d++;
-					longh2d++;
+					longv1d++;
+					longv2d++;
 				}
 			}
 		}
