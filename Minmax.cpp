@@ -253,7 +253,7 @@ void Minmax::evalJeu(int** matrix, int j_, int* st, int* sc)
 	nbh1 = 0, nbh2 = 0, nbv1 = 0, nbv2 = 0, nbh1d = 0, nbh2d = 0, nbv1d = 0, nbv2d = 0;
 
 	//parcourt des diagonales
-	for (x = 0; (x + long_win) <= dim; x++)
+	for (x = 0; x < dim; x++)
 	{
 		for (y = 0; (y + x) < dim; y++)
 		{
@@ -283,7 +283,7 @@ void Minmax::evalJeu(int** matrix, int j_, int* st, int* sc)
 			}
 			if (x != 0)
 			{
-				valh = matrix[y][x + y];
+				valh = matrix[(dim - 1) - x - y][(dim - 1) - y];
 				if (valh == 1)
 				{
 					nbh1d++;
@@ -307,7 +307,7 @@ void Minmax::evalJeu(int** matrix, int j_, int* st, int* sc)
 				}
 			}
 			//montante
-			valv = matrix[x + y][(dim - 1) - y];
+			valv = matrix[(dim - 1) - x - y][y];
 			if (valv == 1)
 			{
 				nbv1++;
@@ -331,7 +331,7 @@ void Minmax::evalJeu(int** matrix, int j_, int* st, int* sc)
 			}
 			if (x != 0)
 			{
-				valh = matrix[y][(dim - 1 - x) - y];
+				valh = matrix[x + y][(dim - 1) - y];
 				if (valh == 1)
 				{
 					nbh1d++;
