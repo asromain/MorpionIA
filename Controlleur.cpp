@@ -246,7 +246,7 @@ void Controlleur::reset()
 	j1ordi = false;
 	j2ordi = false;
 	if (curseurT == 0) { dim = 3; long_win = 3; prof = 8; }
-	if (curseurT == 1) { dim = 5; long_win = 4; prof = 4; }
+	if (curseurT == 1) { dim = 5; long_win = 4; prof = 3; }
 	if (curseurT == 2) { dim = 10; long_win = 5; prof = 2; }
 	gr = new Grid(dim);
 	if (curseurJ1 != 0)
