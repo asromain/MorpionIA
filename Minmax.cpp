@@ -13,6 +13,7 @@ int* Minmax::play(int** matrix, int *j_)
 	cout << ">> PLAY: calculating minmax" << endl;
 	int maxcourant = -1000000; // valeur outrageusement basse pour la comparer avec les autres
 	int* res = new int[2]; // position choisit pour jouer
+	cout << "param :  lg_win : " << long_win << ", dim : " << dim;
 	//cout << "choice between : ";
 
 	vector<int> ress;
@@ -27,7 +28,7 @@ int* Minmax::play(int** matrix, int *j_)
 				matrix[i][j] = *j_; // on joue
 				int max = calculMin(matrix, profondeur, *j_); // on evalue le coup et on le compare avec ce qu'on a deja
 				ress.push_back(max);
-				if ((max > maxcourant) || ((max == maxcourant) && (rand()%2))) // si c'est mieux on le garde
+				if (max > maxcourant) // si c'est mieux on le garde
 				{
 					maxcourant = max;
 					res[0] = i;
@@ -183,203 +184,272 @@ void Minmax::evalJeu(int** matrix, int j_, int* st, int* sc)
 			//verticale
 			valv = matrix[x][y];
 			//cout << "valv : " << valv << endl;
-			if (valv == 1)
-			{
-				nbv1++;
-				longv1++;
-				if (longv2 >= long_win) score2 += (longv2 * 10) + (nbv2 * 10);
-				nbv2 = 0;
-				longv2 = 0;
-			}
-			if (valv == 2)
-			{
-				nbv2++;
-				longv2++;
-				if (longv1 >= long_win) score1 += (longv1 * 10) + (nbv1 * 10);
-				nbv1 = 0;
-				longv1 = 0;
-			}
 			if (valv == 0)
 			{
 				longv1++;
 				longv2++;
 			}
-
+			else
+			{
+				if (valv == 1)
+				{
+					nbv1++;
+					longv1++;
+					if (longv2 / long_win) score2 += (longv2 + nbv2);
+					nbv2 = 0;
+					longv2 = 0;
+				}
+				else
+				{
+					nbv2++;
+					longv2++;
+					if (longv1 / long_win) score1 += (longv1 + nbv1);
+					nbv1 = 0;
+					longv1 = 0;
+				}
+			}
 			//horizontale
 			valh = matrix[y][x];
-			if (valh == 1)
-			{
-				nbh1++;
-				longh1++;
-				if (longh2 >= long_win) score2 += (longh2 * 10) + (nbh2 * 10);
-				nbh2 = 0;
-				longh2 = 0;
-			}
-			if (valh == 2)
-			{
-				nbh2++;
-				longh2++;
-				if (longh1 >= long_win) score1 += (longh1 * 10) + (nbh1 * 10);
-				nbh1 = 0;
-				longh1 = 0;
-			}
 			if (valh == 0)
 			{
 				longh1++;
 				longh2++;
 			}
+			else
+			{
+				valh = matrix[y][x];
+				if (valh == 1)
+				{
+					nbh1++;
+					longh1++;
+					if (longh2 / long_win) score2 += (longh2 + nbh2);
+					nbh2 = 0;
+					longh2 = 0;
+				}
+				else
+				{
+					nbh2++;
+					longh2++;
+					if (longh1 / long_win) score1 += (longh1 + nbh1);
+					nbh1 = 0;
+					longh1 = 0;
+				}
+			}
 		}
-		if (longh2 >= long_win) score2 += (longh2 * 10) + (nbh2 * 10);
-		if (longh1 >= long_win) score1 += (longh1 * 10) + (nbh1 * 10);
-		if (longv2 >= long_win) score2 += (longv2 * 10) + (nbv2 * 10);
-		if (longv1 >= long_win) score1 += (longv1 * 10) + (nbv1 * 10);
-		if (j_ == 1)
-		{
-			score += score1;
-			score -= score2;
-		}
-		else
-		{
-			score -= score1;
-			score += score2;
-		}
+		if (longh2 / long_win) score2 += (longh2 + nbh2);
+		if (longh1 / long_win) score1 += (longh1 + nbh1);
+		if (longv2 / long_win) score2 += (longv2 + nbv2);
+		if (longv1 / long_win) score1 += (longv1 + nbv1);
+
 		longh1 = 0, longh2 = 0, longv1 = 0, longv2 = 0;
-		score1 = 0, score2 = 0;
 		nbh1 = 0, nbh2 = 0, nbv1 = 0, nbv2 = 0;
 	}
 
+	//parcourt des diagonales
+	// x = 0
+	for (y = 0; y < dim; y++) 
+	{
+		//cout << "boucle d" << endl;
+		//descendante
+		valh = matrix[y][y];
+
+		if (valh == 0)
+		{
+			longh1++;
+			longh2++;
+		}
+		else
+		{
+			if (valh == 1)
+			{
+				nbh1++;
+				longh1++;
+				if (longh2 / long_win) score2 += (longh2 + nbh2);
+				nbh2 = 0;
+				longh2 = 0;
+			}
+			else
+			{
+				nbh2++;
+				longh2++;
+				if (longh1 / long_win) score1 += (longh1 + nbh1);
+				nbh1 = 0;
+				longh1 = 0;
+			}
+		}
+		
+		//montante
+		valv = matrix[(dim - 1) - y][y];
+		if (valv == 0)
+		{
+			longv1++;
+			longv2++;
+		}
+		else
+		{
+			if (valv == 1)
+			{
+				nbv1++;
+				longv1++;
+				if (longv2 / long_win) score2 += (longv2 + nbv2);
+				nbv2 = 0;
+				longv2 = 0;
+			}
+			else
+			{
+				nbv2++;
+				longv2++;
+				if (longv1 / long_win) score1 += (longv1 + nbv1);
+				nbv1 = 0;
+				longv1 = 0;
+			}
+		}
+	}
+	if (longh2 / long_win) score2 += (longh2 + nbh2);
+	if (longh1 / long_win) score1 += (longh1 + nbh1);
+	if (longv2 / long_win) score2 += (longv2 + nbv2);
+	if (longv1 / long_win) score1 += (longv1 + nbv1);
+	if (longh2d / long_win) score2 += (longh2d + nbh2d);
+	if (longh1d / long_win) score1 += (longh1d + nbh1d);
+	if (longv2d / long_win) score2 += (longv2d + nbv2d);
+	if (longv1d / long_win) score1 += (longv1d + nbv1d);
+
 	longh1 = 0, longh2 = 0, longv1 = 0, longv2 = 0, longh1d = 0, longh2d = 0, longv1d = 0, longv2d = 0;
-	score1 = 0, score2 = 0;
 	nbh1 = 0, nbh2 = 0, nbv1 = 0, nbv2 = 0, nbh1d = 0, nbh2d = 0, nbv1d = 0, nbv2d = 0;
 
-	//parcourt des diagonales
-	for (x = 0; x < dim; x++)
+	for (x = 1; (x + long_win) <= dim; x++)
 	{
 		for (y = 0; (y + x) < dim; y++)
 		{
 			//cout << "boucle d" << endl;
 			//descendante
 			valh = matrix[x + y][y];
-			if (valh == 1)
-			{
-				nbh1++;
-				longh1++;
-				if (longh2 >= long_win) score2 += (longh2 * 10) + (nbh2 * 10);
-				nbh2 = 0;
-				longh2 = 0;
-			}
-			if (valh == 2)
-			{
-				nbh2++;
-				longh2++;
-				if (longh1 >= long_win) score1 += (longh1 * 10) + (nbh1 * 10);
-				nbh1 = 0;
-				longh1 = 0;
-			}
+
 			if (valh == 0)
 			{
 				longh1++;
 				longh2++;
 			}
-			if (x != 0)
+			else
 			{
-				valh = matrix[(dim - 1) - x - y][(dim - 1) - y];
+				if (valh == 1)
+				{
+					nbh1++;
+					longh1++;
+					if (longh2 / long_win) score2 += (longh2 + nbh2);
+					nbh2 = 0;
+					longh2 = 0;
+				}
+				else
+				{
+					nbh2++;
+					longh2++;
+					if (longh1 / long_win) score1 += (longh1 + nbh1);
+					nbh1 = 0;
+					longh1 = 0;
+				}
+			}
+			valh = matrix[(dim - 1) - x - y][(dim - 1) - y];
+			if (valh == 0)
+			{
+				longh1d++;
+				longh2d++;
+			}
+			else
+			{
 				if (valh == 1)
 				{
 					nbh1d++;
 					longh1d++;
-					if (longh2d >= long_win) score2 += (longh2d * 10) + (nbh2d * 10);
+					if (longh2d / long_win) score2 += (longh2d + nbh2d);
 					nbh2d = 0;
 					longh2d = 0;
 				}
-				if (valh == 2)
+				else
 				{
 					nbh2d++;
 					longh2d++;
-					if (longh1d >= long_win) score1 += (longh1d * 10) + (nbh1d * 10);
+					if (longh1d / long_win) score1 += (longh1d + nbh1d);
 					nbh1d = 0;
 					longh1d = 0;
-				}
-				if (valh == 0)
-				{
-					longh1d++;
-					longh2d++;
 				}
 			}
 			//montante
 			valv = matrix[(dim - 1) - x - y][y];
-			if (valv == 1)
-			{
-				nbv1++;
-				longv1++;
-				if (longv2 >= long_win) score2 += (longv2 * 10) + (nbv2 * 10);
-				nbv2 = 0;
-				longv2 = 0;
-			}
-			if (valv == 2)
-			{
-				nbv2++;
-				longv2++;
-				if (longv1 >= long_win) score1 += (longv1 * 10) + (nbv1 * 10);
-				nbv1 = 0;
-				longv1 = 0;
-			}
 			if (valv == 0)
 			{
 				longv1++;
 				longv2++;
 			}
-			if (x != 0)
+			else
 			{
-				valv = matrix[x + y][(dim - 1) - y];
+				if (valv == 1)
+				{
+					nbv1++;
+					longv1++;
+					if (longv2 / long_win) score2 += (longv2 + nbv2);
+					nbv2 = 0;
+					longv2 = 0;
+				}
+				else
+				{
+					nbv2++;
+					longv2++;
+					if (longv1 / long_win) score1 += (longv1 + nbv1);
+					nbv1 = 0;
+					longv1 = 0;
+				}
+			}
+			valv = matrix[x + y][(dim - 1) - y];
+			if (valv == 0)
+			{
+				longv1d++;
+				longv2d++;
+			}
+			else
+			{
 				if (valv == 1)
 				{
 					nbv1d++;
 					longv1d++;
-					if (longv2d >= long_win) score2 += (longv2d * 10) + (nbv2d * 10);
+					if (longv2d / long_win) score2 += (longv2d + nbv2d);
 					nbv2d = 0;
 					longv2d = 0;
 				}
-				if (valv == 2)
+				else
 				{
 					nbv2d++;
 					longv2d++;
-					if (longv1d >= long_win) score1 += (longv1d * 10) + (nbv1d * 10);
+					if (longv1d / long_win) score1 += (longv1d + nbv1d);
 					nbv1d = 0;
 					longv1d = 0;
 				}
-				if (valv == 0)
-				{
-					longv1d++;
-					longv2d++;
-				}
 			}
 		}
-		if (longh2 >= long_win) score2 += (longh2 * 10) + (nbh2 * 10);
-		if (longh1 >= long_win) score1 += (longh1 * 10) + (nbh1 * 10);
-		if (longv2 >= long_win) score2 += (longv2 * 10) + (nbv2 * 10);
-		if (longv1 >= long_win) score1 += (longv1 * 10) + (nbv1 * 10);
-		if (longh2d >= long_win) score2 += (longh2d * 10) + (nbh2d * 10);
-		if (longh1d >= long_win) score1 += (longh1d * 10) + (nbh1d * 10);
-		if (longv2d >= long_win) score2 += (longv2d * 10) + (nbv2d * 10);
-		if (longv1d >= long_win) score1 += (longv1d * 10) + (nbv1d * 10);
+		if (!(longh2 / long_win)) score2 += (longh2 + nbh2);
+		if (!(longh1 / long_win)) score1 += (longh1 + nbh1);
+		if (!(longv2 / long_win)) score2 += (longv2 + nbv2);
+		if (!(longv1 / long_win)) score1 += (longv1 + nbv1);
+		if (!(longh2d / long_win)) score2 += (longh2d + nbh2d);
+		if (!(longh1d / long_win)) score1 += (longh1d + nbh1d);
+		if (!(longv2d / long_win)) score2 += (longv2d + nbv2d);
+		if (!(longv1d / long_win)) score1 += (longv1d + nbv1d);
 
-		if (j_ == 1)
-		{
-			score += score1;
-			score -= score2;
-		}
-		else
-		{
-			score -= score1;
-			score += score2;
-		}
 		longh1 = 0, longh2 = 0, longv1 = 0, longv2 = 0, longh1d = 0, longh2d = 0, longv1d = 0, longv2d = 0;
-		score1 = 0, score2 = 0;
 		nbh1 = 0, nbh2 = 0, nbv1 = 0, nbv2 = 0, nbh1d = 0, nbh2d = 0, nbv1d = 0, nbv2d = 0;
 	}
 
 
+	if (j_ == 1)
+	{
+		score += score1;
+		score -= score2;
+	}
+	else
+	{
+		score -= score1;
+		score += score2;
+	}
 	//cout << "fin" << endl;
 	*st = 0;
 	*sc = score;
@@ -392,6 +462,8 @@ int Minmax::autreJoueur(int j_)
 }
 bool Minmax::victoire(int** matrix)
 {
+
+	//cout << "param :  lg_win : " << long_win << ", dim : " << dim << endl;
 	int i, j;
 	int t, tup, tdown;
 	int lg, lgup, lgdown;
@@ -410,6 +482,7 @@ bool Minmax::victoire(int** matrix)
 			}
 			if (lg == long_win && t != 0)
 			{
+				//cout << "yep 1, t = " << t << ", lg = " << lg << ", lg_win = " << long_win;
 				return true;
 			}
 		}
@@ -430,6 +503,7 @@ bool Minmax::victoire(int** matrix)
 			}
 			if (lg == long_win && t != 0)
 			{
+				//cout << "yep 2";
 				return true;
 			}
 		}
@@ -461,6 +535,7 @@ bool Minmax::victoire(int** matrix)
 			}
 			if ((lgup == long_win && tup != 0) || (lgdown == long_win && tdown != 0))
 			{
+				//cout << "yep 3";
 				return true;
 			}
 		}
@@ -488,10 +563,12 @@ bool Minmax::victoire(int** matrix)
 			}
 			if ((lgup == long_win && tup != 0) || (lgdown == long_win && tdown != 0))
 			{
+				//cout << "yep 4";
 				return true;
 			}
 		}
 	}
+	//cout << "nope ";
 	return false;
 }
 bool Minmax::nul(int** matrix)

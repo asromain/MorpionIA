@@ -246,22 +246,22 @@ void Controlleur::reset()
 	j1ordi = false;
 	j2ordi = false;
 	if (curseurT == 0) { dim = 3; long_win = 3; prof = 8; }
-	if (curseurT == 1) { dim = 5; long_win = 4; prof = 3; }
+	if (curseurT == 1) { dim = 5; long_win = 4; prof = 4; }
 	if (curseurT == 2) { dim = 10; long_win = 5; prof = 2; }
 	gr = new Grid(dim);
 	if (curseurJ1 != 0)
 	{
 		j1ordi = true;
 		if (curseurJ1 == 1) ia1 = new IA(dim, long_win, 1);
-		if (curseurJ1 == 2) ia1 = new Minmax(dim, long_win, prof, 1);
-		if (curseurJ1 == 3) ia1 = new Alphabeta(dim, long_win, prof+1, 1);
+		if (curseurJ1 == 2) ia1 = new Minmax(dim, long_win, prof-1, 1);
+		if (curseurJ1 == 3) ia1 = new Alphabeta(dim, long_win, prof, 1);
 	}
 	if (curseurJ2 != 0)
 	{
 		j2ordi = true;
 		if (curseurJ2 == 1) ia2 = new IA(dim, long_win, 2);
-		if (curseurJ2 == 2) ia2 = new Minmax(dim, long_win, prof, 2);
-		if (curseurJ2 == 3) ia1 = new Alphabeta(dim, long_win, prof+1, 2);
+		if (curseurJ2 == 2) ia2 = new Minmax(dim, long_win, prof-1, 2);
+		if (curseurJ2 == 3) ia2 = new Alphabeta(dim, long_win, prof, 2);
 	}
 	turn = 0;
 	gagnant = 0;

@@ -59,8 +59,8 @@ void Case::draw() {
 	}
 	if (type == 2)
 	{
-		GraphicPrimitives::drawLine2D(posX, posY, posX + width, posY + height, 0.737f, 0.251f, 1.0f);
-		GraphicPrimitives::drawLine2D(posX + width, posY, posX, posY + height, 0.737f, 0.251f, 1.0f);
+		GraphicPrimitives::drawLine2D(posX, posY, posX + width, posY + height, 1.0f, 0.0f, 0.0f);
+		GraphicPrimitives::drawLine2D(posX + width, posY, posX, posY + height, 1.0f, 0.0f, 0.0f);
 	}
 }
 

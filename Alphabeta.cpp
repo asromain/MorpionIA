@@ -6,12 +6,14 @@ Alphabeta::~Alphabeta() {}
 
 int* Alphabeta::play(int** matrix, int *j_)
 {
-	cout << ">> PLAY: calculating minmax" << endl;
+
+	//cout << ">> PLAY: calculating minmax" << endl;
 	int maxcourant = -1000000; // valeur outrageusement basse pour la comparer avec les autres
 	int* res = new int[2]; // position choisit pour jouer
+	//cout << "param :  lg_win : " << long_win << ", dim : " << dim << endl;
 	//cout << "choice between : ";
-
-	vector<int> ress;
+	int prof = profondeur;
+	//vector<int> ress;
 
 	//on parcourt la matrice en quête d'un point jouable
 	for (int i = 0; i < dim; i++)
@@ -22,8 +24,10 @@ int* Alphabeta::play(int** matrix, int *j_)
 			{
 				matrix[i][j] = *j_; // on joue
 				int max = calculMin(matrix, profondeur, *j_, maxcourant); // on evalue le coup et on le compare avec ce qu'on a deja
-				ress.push_back(max);
-				if ((max > maxcourant) || ((max == maxcourant) && (rand() % 2))) // si c'est mieux on le garde
+				//ress.push_back(max);
+				//if (max >= 10000 && (max / 10000) < prof) prof = (1 + (profondeur - (max / 10000)));
+				//if (max <= -10000 && ((max / 10000) * -1) < prof) prof = ((1 + (profondeur - (max / 10000)))* -1);
+				if (max > maxcourant) // si c'est mieux on le garde
 				{
 					maxcourant = max;
 					res[0] = i;
@@ -33,13 +37,14 @@ int* Alphabeta::play(int** matrix, int *j_)
 			}
 		}
 	}
-	cout << "res[0]=" << res[0] << ", res[1]=" << res[1] << endl;
-	cout << "on choisit : " << maxcourant << " parmis : ";
-	for each (int n in ress)
+	//cout << "res[0]=" << res[0] << ", res[1]=" << res[1] << endl;
+	//cout << "on choisit : " << maxcourant << " parmis : ";
+	/*for each (int n in ress)
 	{
 		cout << n << " ";
 	}
-	cout << endl;
+	cout << endl;*/
+	//profondeur = 3;
 	return res; // on retourne la position qui a ete choisi comme la meilleure
 }
 /*
@@ -75,6 +80,7 @@ int Alphabeta::calculMin(int** matrix, int prof, int j_, int alpha)
 				int tmp = calculMax(matrix, (prof - 1), autreJoueur(j_), min); // et on evalue
 				if (tmp <= alpha)
 				{
+					matrix[i][j] = 0;
 					return tmp;
 				}
 				//cout << "tmp : " << tmp << endl;
@@ -124,6 +130,7 @@ int Alphabeta::calculMax(int** matrix, int prof, int j_, int alpha)
 				int tmp = calculMin(matrix, (prof - 1), autreJoueur(j_), max);
 				if (tmp >= alpha) 
 				{
+					matrix[i][j] = 0;
 					return tmp;
 				}
 				//ress.push_back(max);
