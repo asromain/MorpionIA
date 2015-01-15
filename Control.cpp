@@ -1,7 +1,7 @@
 #include "Control.h"
 using namespace std;
 
-Control::Control(Controlleur *ctrl_) : ctrl(ctrl_) 
+Control::Control(Controleur *ctrl_) : ctrl(ctrl_)
 {
 	cout << "Creating control" << endl;
 }

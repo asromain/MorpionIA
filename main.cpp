@@ -4,7 +4,7 @@
 #include "Graphic.h"
 #include "Game.h"
 #include "Control.h"
-#include "Controlleur.h"
+#include "Controleur.h"
 using namespace std;
 
 
@@ -13,7 +13,7 @@ int main(int argc, char * argv[])
     Engine e(argc,argv);
 
 	int dim = 3;
-	Controlleur* ctrl = new Controlleur();
+	Controleur* ctrl = new Controleur();
     
 	Graphic * ge = new Graphic(ctrl);
 	Control * ce = new Control(ctrl);

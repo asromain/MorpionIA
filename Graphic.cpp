@@ -1,7 +1,7 @@
 #include "Graphic.h"
 using namespace std;
 
-Graphic::Graphic(Controlleur *ctrl_) : ctrl(ctrl_) 
+Graphic::Graphic(Controleur *ctrl_) : ctrl(ctrl_)
 {
 	cout << "Creating Graphic" << endl;
 }

@@ -13,7 +13,7 @@ Permet de gérer toutes les
 animations dans notre application
 ****************************************/
 
-class Controlleur
+class Controleur
 {
 
 private:
@@ -29,7 +29,7 @@ private:
 
 public:
 
-	Controlleur();
+	Controleur();
 
 	Grid* getGr();
 	int getWw();
@@ -63,5 +63,5 @@ public:
 	int relativeToPixelY(float n);
 	float pixelToRelativeY(int n);
 
-	~Controlleur();
+	~Controleur();
 };

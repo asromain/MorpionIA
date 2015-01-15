@@ -1,102 +1,102 @@
-#include "Controlleur.h"
+#include "Controleur.h"
 using namespace std;
 
-Controlleur::Controlleur()
+Controleur::Controleur()
 {
 	cout << "Creating controller" << endl;
 	ww = WWIDTH;
 	wh = WHEIGHT;
 }
 
-Grid* Controlleur::getGr()
+Grid* Controleur::getGr()
 {
 	return gr;
 }
-int Controlleur::getWw()
+int Controleur::getWw()
 {
 	return ww;
 }
-int Controlleur::getWh()
+int Controleur::getWh()
 {
 	return wh;
 }
-void Controlleur::setWw(int n)
+void Controleur::setWw(int n)
 {
 	ww = n;
 }
-void Controlleur::setWh(int n)
+void Controleur::setWh(int n)
 {
 	wh = n;
 }
-int Controlleur::getStatus()
+int Controleur::getStatus()
 {
 	return status;
 }
-bool Controlleur::getJ1ordi()
+bool Controleur::getJ1ordi()
 {
 	return j1ordi;
 }
-bool Controlleur::getJ2ordi()
+bool Controleur::getJ2ordi()
 {
 	return j2ordi;
 }
-bool Controlleur::getTurnJ2()
+bool Controleur::getTurnJ2()
 {
 	return turn;
 }
-void Controlleur::setStatus(int n)
+void Controleur::setStatus(int n)
 {
 	status = n;
 }
-void Controlleur::changeTurn()
+void Controleur::changeTurn()
 {
 	turn = !turn;
 }
-int Controlleur::getCurseurJ1()
+int Controleur::getCurseurJ1()
 {
 	return curseurJ1;
 }
-int Controlleur::getCurseurJ2()
+int Controleur::getCurseurJ2()
 {
 	return curseurJ2;
 }
-int Controlleur::getCurseurT()
+int Controleur::getCurseurT()
 {
 	return curseurT;
 }
-void Controlleur::setCurseurJ1(int n)
+void Controleur::setCurseurJ1(int n)
 {
 	curseurJ1 = n;
 }
-void Controlleur::setCurseurJ2(int n)
+void Controleur::setCurseurJ2(int n)
 {
 	curseurJ2 = n;
 }
-void Controlleur::setCurseurT(int n)
+void Controleur::setCurseurT(int n)
 {
 	curseurT = n;
 }
-int Controlleur::getGagnant()
+int Controleur::getGagnant()
 {
 	return gagnant;
 }
-void Controlleur::setGagnant(int n)
+void Controleur::setGagnant(int n)
 {
 	gagnant = n;
 }
-void Controlleur::ia1Turn(int j)
+void Controleur::ia1Turn(int j)
 {
 	int* res = ia1->play(gr->getMatrix(), &j);
 	gr->actionIA(res[0], res[1], j);
 	delete[] res;
 }
-void Controlleur::ia2Turn(int j)
+void Controleur::ia2Turn(int j)
 {
 	int* res = ia2->play(gr->getMatrix(), &j);
 	gr->actionIA(res[0], res[1], j);
 	delete[] res;
 }
-void Controlleur::isGameOver()
+void Controleur::isGameOver()
 {
 	bool egalite = true;
 	int i, j;      // indices boucle
@@ -225,7 +225,7 @@ void Controlleur::isGameOver()
 		return;
 	}
 }
-void Controlleur::print()
+void Controleur::print()
 {
 	cout << "status : " << status <<
 		", gagnant : " << gagnant <<
@@ -233,12 +233,12 @@ void Controlleur::print()
 		", turn : " << turn << endl;
 	gr->print();
 }
-int Controlleur::getDim()
+int Controleur::getDim()
 {
 	return dim;
 }
 
-void Controlleur::reset()
+void Controleur::reset()
 {
 	delete gr;
 	delete ia1;
@@ -267,27 +267,27 @@ void Controlleur::reset()
 	gagnant = 0;
 }
 
-int Controlleur::relativeToPixelX(float n)
+int Controleur::relativeToPixelX(float n)
 {
 	return ((n + 1) * ww) / 2;
 }
-float Controlleur::pixelToRelativeX(int n)
+float Controleur::pixelToRelativeX(int n)
 {
 	float w = ww;
 	return (n - (w / 2)) / (w / 2);
 }
-int Controlleur::relativeToPixelY(float n)
+int Controleur::relativeToPixelY(float n)
 {
 	return ((2 - (n + 1)) * wh) / 2;
 }
-float Controlleur::pixelToRelativeY(int n)
+float Controleur::pixelToRelativeY(int n)
 {
 	float h = wh;
 	return (n - (h / 2)) / -(h / 2);
 }
 
 // Destructeur
-Controlleur::~Controlleur()
+Controleur::~Controleur()
 {
 	delete ia1;
 	delete ia2;

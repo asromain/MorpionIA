@@ -1,7 +1,7 @@
 #include "Game.h"
 using namespace std;
 
-Game::Game(Controlleur *ctrl_) : ctrl(ctrl_) 
+Game::Game(Controleur *ctrl_) : ctrl(ctrl_)
 {
 	cout << "Creating Game" << endl;
 }

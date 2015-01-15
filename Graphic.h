@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include "Engine.h"
 #include "GraphicPrimitives.h"
-#include "Controlleur.h"
+#include "Controleur.h"
 using namespace std;
 
 
@@ -20,7 +20,7 @@ class Graphic : public GraphicEngine
 
 private:
 
-	Controlleur *ctrl;
+	Controleur *ctrl;
 
 	void background();
 	void menu();
@@ -28,7 +28,7 @@ private:
 
 public:
 
-	Graphic(Controlleur *ctrl_);
+	Graphic(Controleur *ctrl_);
 
 	virtual void Draw();
 	virtual void reshape(int ww_, int wh_);

@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 #include "Engine.h"
-#include "Controlleur.h"
+#include "Controleur.h"
 using namespace std;
 
 /***************************************
@@ -14,11 +14,11 @@ class Control : public ControlEngine
 
 private:
 
-	Controlleur *ctrl;
+	Controleur *ctrl;
 
 public:
 
-	Control(Controlleur *ctrl_);
+	Control(Controleur *ctrl_);
 
 	virtual void MouseCallback(int button, int state, int x, int y);
 	virtual void KeyboardCallback(unsigned char key, int x, int y);

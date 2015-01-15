@@ -1,6 +1,6 @@
 #pragma once
 #include "Engine.h"
-#include "Controlleur.h"
+#include "Controleur.h"
 using namespace std;
 
 
@@ -14,11 +14,11 @@ class Game : public GameEngine
 
 private:
 
-	Controlleur *ctrl;
+	Controleur *ctrl;
 
 public:
 		
-	Game(Controlleur *ctrl_);
+	Game(Controleur *ctrl_);
 	virtual void idle();
 	// testByLine
 	// testByCol
